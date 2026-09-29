@@ -15,57 +15,82 @@
 
 ---
 
-### PHASE: DATASET FINALIZATION & CONSOLIDATION
+### DATASET FINALIZATION & CONSOLIDATION
+**Status: COMPLETE** (Date: 2026-09-29)
+- Audited all 10,242 placement samples and 54 graph feature sets.
+- Reorganized into canonical structure: `dataset/raw/`, `dataset/circuit_graph/`, `dataset/placement/`, `dataset/processed/`, `dataset/metadata/`.
+- Deduplicated ~2.85 GB of redundant intermediate files.
+- Generated master index: `dataset_index.csv` (10,242 rows) and `dataset_index.json`.
+
+---
+
+### PHASE 2 — CIRCUIT GRAPH CONSTRUCTION & VALIDATION
 **Status: COMPLETE** (Date: 2026-09-29)
 
-#### 1. What Was Found & Audited
-- **Circuit Graph Features:** 162 `.npy` files across 54 designs (`net_attr`, `node_attr`, `pin_attr`).
-- **Placement Dataset:** Exactly 10,242 `.npy` placement samples across 54 designs in CircuitNet N28.
-- **Coordinate System Verified:** Despite the archive name (`instance_placement_micron.tar.gz`), inspection confirmed coordinates are discrete GCell/tile bounding boxes $[x_1, y_1, x_2, y_2] \in [0, 255]$ ($256 \times 256$ grid, $2.25\,\mu\text{m}$ per tile).
-- **Temporary / Duplicate Files Identified:**
-  - Incomplete partial download: `instance_placement_gcell.tar.gzi53y992p.part` (31.5 MB).
-  - Redundant tarball copy: `graph_information.tar.gz` (66.4 MB duplicate in subfolder).
-  - Redundant sample: `dataset/processed/sample_1/` (52.2 MB duplicate).
-  - Intermediate extraction duplicate: `dataset/processed/DEF/` (2.86 GB of `.def.gz` files identical to `dataset/raw/DEF-place-0.tar.gz`).
+#### 1. Execution Summary
+- **Graphs Discovered & Processed:** 54 of 54 (100.0%)
+- **Validation Results:**
+  - PASS: 27 designs (Variant 'a')
+  - WARN: 27 designs (Variant 'b' — each contains exactly 1 benign duplicate pin record for APB error signal `pslverr` on node 40533 in the raw data)
+  - FAIL: 0 designs
+- **Integrity Checks:** 0 invalid node indices, 0 invalid net indices, 0 NaNs, 0 missing LEF types, 0 isolated cells, 0 empty nets.
+- **LEF Mapping:** 286 unique cell types across all 54 designs mapped to `circuitnet.lef` with **100.0% coverage** (286 / 286).
 
-#### 2. What Was Retained
-- **`dataset/raw/` (8.1 GB):** All 4 source compressed archives (`netlist.tar.gz`, `DEF-place-0.tar.gz`, `graph_information.tar.gz`, `instance_placement_micron.tar.gz`) + `circuitnet.lef`.
-- **`dataset/circuit_graph/` (533 MB):** All 162 graph topological attribute files (`net_attr`, `node_attr`, `pin_attr`).
-- **`dataset/placement/instance_placement/` (39 GB):** All 10,242 placement samples.
-- **`dataset/processed/` (27 GB):** 54 gate-level netlists (992 MB) + 500 uncompressed DEFs (26 GB).
-- **`dataset/metadata/` (7.4 MB):** All manifests, including `dataset_index.csv` (10,242 rows) and `dataset_index.json`.
+#### 2. Global Graph Statistics (54 Designs Total)
+- **Total Cell Nodes:** 2,373,702 (Mean: 43,957 cells/design, Range: 19,915 – 75,073)
+- **Total Net Nodes:** 2,469,557 (Mean: 45,733 nets/design, Range: 21,632 – 76,604)
+- **Total Pin Connections:** 9,489,204 raw pins; 9,572,055 unrolled bipartite edges
+- **Total Active Silicon Area:** 12,342,337 $\mu\text{m}^2$ (Mean: 228,562 $\mu\text{m}^2$/design)
+- **Average Net Degree:** 3.85 pins/net
+- **Average Cell Degree:** 4.03 pins/cell
+- **Global Clock Net Max Degree:** Up to 3,661 sinks
 
-#### 3. What Was Removed (Reclaimed ~2.85 GB)
-- Removed incomplete `.part` file (31.5 MB).
-- Removed duplicate `graph_information.tar.gz` (66.4 MB).
-- Removed duplicate `sample_1/` directory (52.2 MB).
-- Removed intermediate `.def.gz` folder (2.86 GB, perfectly preserved in raw archive and decompressed DEFs).
+#### 3. Canonical Representations Exported
+- **Output Directory:** `dataset/graphs/` (54 compressed `.npz` files, **156.41 MB total**)
+- **Data Layers per Graph:**
+  - `cell_names` $[N]$, `cell_types` $[N]$, `cell_features` $[N \times 7]$ (area, width, height, aspect ratio, is_macro, degree, log_degree)
+  - `net_names` $[M]$, `net_features` $[M \times 4]$ (degree, log_degree, is_clock, is_reset)
+  - `pin_names` $[E_{\text{bip}}]$ (unrolled with bit indices for bus pins)
+  - `edge_index_bipartite` $[2 \times E_{\text{bip}}]$ (lossless bipartite hypergraph)
+  - `edge_index_cell` $[2 \times E_{\text{cell}}]$ (homogeneous cell graph with high-fanout threshold $\le 50$)
+  - `metadata_json` (parameter schema version `2.0.0`)
 
-#### 4. Disk Usage
-- **Before Cleanup:** 77.0 GB in `dataset/` (80 GB total on `/dev/sdd`)
-- **After Cleanup:** 74.1 GB in `dataset/` (77 GB total on `/dev/sdd`)
-- **Space Reclaimed:** ~2.85 GB
+#### 4. Artifacts & Manifests Generated
+- `src/graph/lef_parser.py` (LEF macro, geometry, and pin parser)
+- `src/graph/inspect_graph.py` (Dataset structure auditor)
+- `src/graph/validate_graph.py` (Automated 20-point validation suite)
+- `src/graph/graph_features.py` (Feature extraction & statistical analysis)
+- `src/graph/graph_builder.py` (Canonical graph representation builder)
+- `src/graph/export_graph.py` (Batch canonical `.npz` exporter)
+- `dataset/metadata/graph_source_inventory.csv` (Source file audit across 54 designs)
+- `dataset/metadata/graph_validation.csv` (Detailed validation ledger)
+- `dataset/metadata/graph_statistics.csv` (Design-by-design graph topological metrics)
+- `dataset/metadata/graph_lef_mapping.csv` (286-entry cell type geometry mapping)
+- `dataset/metadata/graph_manifest.csv` & `graph_manifest.json` (Canonical graph index)
+- `results/phase_02/validation_summary.csv`
+- `results/phase_02/graph_statistics.csv`
+- `results/phase_02/feature_summary.csv`
+- `docs/PHASE_02_FEATURE_SPECIFICATION.md`
+- `docs/PHASE_02_GRAPH_CONSTRUCTION.md`
 
-#### 5. Validation Suite Results
-All post-cleanup validation checks passed with 100% success (`validate_dataset.py`):
-- File counts: Passed (5 raw archives, 54 netlists, 54 net_attr, 54 node_attr, 54 pin_attr, 500 DEFs, 10,242 placement samples).
-- Archive integrity: Passed (All tarball checksums & tar extractions verified).
-- NumPy loading: Passed (Verified dictionary structure and coordinate bounds across multi-design samples).
-- Master dataset index: Passed (10,242 entries validated).
+#### 5. Validation Command
+```bash
+python3 -m src.graph.validate_graph --all
+```
 
 #### 6. Known Limitations
-- Commercial DEF files exist for 500 samples (focused on `RISCY-a-1` configurations); the broader 10,242 designs are represented via the placement `.npy` dictionary arrays.
-- Placement `.npy` coordinates are represented in GCell grid space ($256 \times 256$) rather than continuous nanometer DBU units.
+- Variant-b designs contain 1 benign duplicate pin record for `pslverr` in raw CircuitNet files.
+- Cell-to-cell projection uses a fanout threshold of 50 to prevent dense clique explosion on global clock/reset nets.
 
 ---
 
 ## NEXT PHASE
 
-### PHASE 2 — Circuit Graph Construction / Feature Preparation
+### PHASE 3 — TECHNOLOGY LIBRARY STRATEGY & WIRE-LOAD MODELING
 **Status: READY TO COMMENCE (DO NOT START YET)**
-- Construct heterogeneous directed bipartite / hypergraph representations from the 54 netlists and `circuit_graph/` attributes.
-- Construct node feature matrices combining cell function, area from LEF, pin counts, and connectivity.
-- Prepare graph data loaders for GraphSAGE representation learning.
+- Formulate open-source wireload and RC parasitic models for TSMC 28nm interconnect layers (M1–M8) in the absence of proprietary `.lib` files.
+- Establish timing proxy models (Elmore delay / FLUTE / Half-Perimeter Wirelength proxies).
+- Prepare cell delay and capacitance tables compatible with OpenROAD / OpenSTA.
 
 ---
 
@@ -75,8 +100,8 @@ All post-cleanup validation checks passed with 100% success (`validate_dataset.p
 |---|---|---|
 | **Phase 1** | **Data Audit & Inventory** | **COMPLETE** |
 | **Dataset Finalization** | **Consolidation, Cleanup & Master Indexing** | **COMPLETE** |
-| Phase 2 | Circuit Graph Construction / Feature Preparation | **NEXT UP** |
-| Phase 3 | Technology Library Strategy & Wire-Load Modeling | PENDING |
+| **Phase 2** | **Circuit Graph Construction & Validation** | **COMPLETE** |
+| Phase 3 | Technology Library Strategy & Wire-Load Modeling | **NEXT UP** |
 | Phase 4 | Baseline Physical Design & OpenROAD Flow Setup | PENDING |
 | Phase 5 | Timing Modeling & Proxy Metrics | PENDING |
 | Phase 6 | Power Estimation & PDN IR-Drop Proxies | PENDING |

@@ -1,0 +1,10 @@
+metric,min,mean,max
+Total Designs,54.0,54.0,54.0
+Cells per Design,19915.0,43957.4,75073.0
+Nets per Design,21632.0,45732.5,76604.0
+Edges per Design,80360.0,177260.3,295107.0
+Unique Cell Types,84.0,118.9,228.0
+Total Cell Area (um2),173381.4,228561.8,288715.5
+Avg Net Degree,3.65,3.85,4.01
+Max Net Degree (Global Net),303.0,1370.2,3661.0
+Avg Cell Connectivity,3.88,4.03,4.11
