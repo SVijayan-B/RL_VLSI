@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# CircuitNet / large datasets
+dataset/raw/
+dataset/processed/
+dataset/placement/
+dataset/circuit_graph/
+
+# Large generated data
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+*.bin
+*.h5
+*.hdf5
+
+# OpenROAD generated files
+*.odb
+*.def
+*.lef
+*.gds
+*.sdc
+*.spef
+*.sdf
+*.vcd
+
+# OpenROAD runs / logs
+runs/
+logs/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
+
+# Model checkpoints
+checkpoints/
+
+# Experiment temporary outputs
+*.log
+*.tmp
+
+# Environment / secrets
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,4 @@
+design_name,source_file,primary_inputs,primary_outputs,inouts,clock_signals,reset_signals,total_cells,sequential_cells,combinational_cells,macro_cells,unique_cell_types,total_nets,avg_fanout,max_fanout,avg_degree,max_degree
+pulpino_top,RISCY-FPU-a-1-c2.v,27,410,0,4,2,75067,11546,63518,3,228,76583,3.84,3661,3.92,30
+pulpino_top,RISCY-a-1-c2.v,27,410,0,4,2,53586,10017,43566,3,153,54748,3.93,2132,4.01,30
+pulpino_top,zero-riscy-a-1-c2.v,27,410,0,4,2,42102,8459,33640,3,121,42442,3.96,1479,3.99,30

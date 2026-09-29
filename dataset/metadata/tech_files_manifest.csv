@@ -1,0 +1,5 @@
+file_path,file_name,extension,size_bytes,is_circuitnet_28nm_compatible,description
+/usr/share/yosys/greenpak4/gp_dff.lib,gp_dff.lib,.lib,998,False,System EDA library (Yosys default or other tool library)
+/usr/share/yosys/coolrunner2/xc2_dff.lib,xc2_dff.lib,.lib,839,False,System EDA library (Yosys default or other tool library)
+/usr/share/yosys/cells.lib,cells.lib,.lib,2432,False,System EDA library (Yosys default or other tool library)
+/home/b_siddarth_vijayan/CircuitNet_28nm/dataset/raw/circuitnet.lef,circuitnet.lef,.lef,7835084,True,CircuitNet TSMC 28nm standard cell and technology LEF

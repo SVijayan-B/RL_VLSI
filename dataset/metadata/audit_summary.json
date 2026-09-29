@@ -1,0 +1,99 @@
+{
+  "timestamp": "2026-09-29 04:08:01",
+  "total_netlists": 54,
+  "total_defs": 500,
+  "netlists_with_defs_count": 3,
+  "netlists_without_defs_count": 51,
+  "paired_netlists": [
+    "RISCY-a-1-c2",
+    "RISCY-a-1-c20",
+    "RISCY-a-1-c5"
+  ],
+  "unpaired_netlists_sample": [
+    "RISCY-FPU-a-1-c2",
+    "RISCY-FPU-a-1-c20",
+    "RISCY-FPU-a-1-c5",
+    "RISCY-FPU-a-2-c2",
+    "RISCY-FPU-a-2-c20",
+    "RISCY-FPU-a-2-c5",
+    "RISCY-FPU-a-3-c2",
+    "RISCY-FPU-a-3-c20",
+    "RISCY-FPU-a-3-c5",
+    "RISCY-FPU-b-1-c2"
+  ],
+  "def_parameter_definitions": {
+    "u": "Target Placement Density / Core Utilization (0.70 to 0.90)",
+    "m": "Macro Placement Configuration Strategy (m1, m2, m3, m4)",
+    "p": "Power Delivery Network (PDN) Mesh Setting (p1 to p8)",
+    "f": "Filler Cell Insertion Stage (f0: after routing/no placement filler, f1: after placement)"
+  },
+  "def_parameter_distribution": {
+    "utilizations": {
+      "0.7": 117,
+      "0.75": 110,
+      "0.8": 110,
+      "0.85": 102,
+      "0.9": 61
+    },
+    "macro_settings": {
+      "m1": 168,
+      "m2": 142,
+      "m3": 126,
+      "m4": 64
+    },
+    "power_mesh_settings": {
+      "p5": 64,
+      "p7": 64,
+      "p1": 63,
+      "p4": 63,
+      "p6": 63,
+      "p8": 63,
+      "p2": 60,
+      "p3": 60
+    },
+    "filler_settings": {
+      "f0": 263,
+      "f1": 237
+    }
+  },
+  "def_parse_status": {
+    "OK": 500
+  },
+  "all_defs_parsed_successfully": true,
+  "lef_audit": {
+    "macro_count": 915,
+    "layer_count": 18,
+    "site_count": 1,
+    "def_to_lef_cell_match_rate": "100.0% (269/269)",
+    "layers": [
+      "CO",
+      "M1",
+      "VIA1",
+      "M2",
+      "VIA2",
+      "M3",
+      "VIA3",
+      "M4",
+      "VIA4",
+      "M5",
+      "VIA5",
+      "M6",
+      "VIA6",
+      "M7",
+      "VIA7",
+      "M8",
+      "RV",
+      "AP"
+    ],
+    "sites": [
+      "CoreSite"
+    ]
+  },
+  "technology_files_available": {
+    "lef": true,
+    "liberty_lib": false,
+    "tlef": false,
+    "sdc": false,
+    "spef": false
+  }
+}
