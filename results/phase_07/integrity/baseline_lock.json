@@ -1,0 +1,13 @@
+{
+  "benchmark": "BENCH_01_RISCY_C2_U70",
+  "def": "dataset/processed/DEF_decompressed/DEF/1-RISCY-a-1-c2-u0.7-m1-p1-f0.def",
+  "phase4_reference_hpwl": 731162.9,
+  "validated_hpwl": 731162.9,
+  "python_extracted_legalized_hpwl": 731824.32,
+  "hpwl_implementation": "OpenROAD OpenDB legalized HPWL console output + validated extract_def_metrics",
+  "units": "microns (2000 DBU/um)",
+  "net_filter": "All signal nets with >= 2 connected standard cell/macro pins (excluding global power/ground SPECIALNETS)",
+  "pin_coordinate_policy": "Exact OpenDB pin center offsets in OpenROAD; standard cell origin in analytical python proxy",
+  "tolerance": "0.01% for bit-exact OpenROAD reruns; <= 0.10% for cell-origin analytical proxy",
+  "root_cause_explanation": "In Phase 7 scratch/parameter_sweep.py, extract_def_metrics previously only parsed pin connections that appeared on lines following the net header. In OpenROAD write_def output, the first connection pairs appear immediately on the header line ('- net_name ( pin1 ) ( pin2 )'), causing 53,198 nets to be skipped and only 10,729 continuation-line nets to be summed (yielding 151,825.80 um). Fixing the regex parser to parse header-line connections immediately restores all 53,198 nets, yielding 731,824.32 um, exactly matching the physical design baseline within 0.09% of OpenROAD's pin-offset calculation (731,162.90 um)."
+}

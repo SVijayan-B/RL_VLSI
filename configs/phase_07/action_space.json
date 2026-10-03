@@ -1,0 +1,209 @@
+{
+  "description": "Adapted 11-Action Space for OpenROAD placement optimization following Agnesina et al. Table III",
+  "version": "1.0.0",
+  "actions": [
+    {
+      "action_id": 1,
+      "action_name": "FLIP Booleans",
+      "paper_reference": "Table III Action 1 (FLIP Booleans)",
+      "affected_parameters": [
+        "disallow_one_site_gaps",
+        "use_diamond_legalizer",
+        "disable_window_extension"
+      ],
+      "parameter_types": [
+        "Boolean",
+        "Boolean",
+        "Boolean"
+      ],
+      "parameter_focus": [
+        "Detailed",
+        "Detailed",
+        "Detailed"
+      ],
+      "update_rule": "Toggle each boolean parameter (val = not val)",
+      "openroad_implementation": "Toggle flags -disallow_one_site_gaps, -use_diamond_legalizer, -disable_window_extension"
+    },
+    {
+      "action_id": 2,
+      "action_name": "UP Integers",
+      "paper_reference": "Table III Action 2 (UP Integers)",
+      "affected_parameters": [
+        "max_displacement",
+        "site_search_window",
+        "row_search_window"
+      ],
+      "parameter_types": [
+        "Numeric integer",
+        "Numeric integer",
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Detailed",
+        "Detailed",
+        "Effort"
+      ],
+      "update_rule": "x_new = min(round(x + (max - min) * delta), max)",
+      "openroad_implementation": "Increase max_displacement (+10), site_search_window (+10), row_search_window (+2)"
+    },
+    {
+      "action_id": 3,
+      "action_name": "DOWN Integers",
+      "paper_reference": "Table III Action 3 (DOWN Integers)",
+      "affected_parameters": [
+        "max_displacement",
+        "site_search_window",
+        "row_search_window"
+      ],
+      "parameter_types": [
+        "Numeric integer",
+        "Numeric integer",
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Detailed",
+        "Detailed",
+        "Effort"
+      ],
+      "update_rule": "x_new = max(round(x - (max - min) * delta), min)",
+      "openroad_implementation": "Decrease max_displacement (-10), site_search_window (-10), row_search_window (-2)"
+    },
+    {
+      "action_id": 4,
+      "action_name": "UP Efforts",
+      "paper_reference": "Table III Action 4 (UP Efforts)",
+      "affected_parameters": [
+        "row_search_window",
+        "site_search_window"
+      ],
+      "parameter_types": [
+        "Numeric integer",
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Effort",
+        "Detailed + Effort"
+      ],
+      "update_rule": "Increase search window parameters by delta",
+      "openroad_implementation": "Increase row_search_window (+2) and site_search_window (+10)"
+    },
+    {
+      "action_id": 5,
+      "action_name": "DOWN Efforts",
+      "paper_reference": "Table III Action 5 (DOWN Efforts)",
+      "affected_parameters": [
+        "row_search_window",
+        "site_search_window"
+      ],
+      "parameter_types": [
+        "Numeric integer",
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Effort",
+        "Detailed + Effort"
+      ],
+      "update_rule": "Decrease search window parameters by delta",
+      "openroad_implementation": "Decrease row_search_window (-2) and site_search_window (-10)"
+    },
+    {
+      "action_id": 6,
+      "action_name": "UP Detailed",
+      "paper_reference": "Table III Action 6 (UP Detailed)",
+      "affected_parameters": [
+        "max_displacement",
+        "site_search_window"
+      ],
+      "parameter_types": [
+        "Numeric integer",
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Detailed",
+        "Detailed"
+      ],
+      "update_rule": "Increase detailed displacement and site window by delta",
+      "openroad_implementation": "Increase max_displacement (+10) and site_search_window (+10)"
+    },
+    {
+      "action_id": 7,
+      "action_name": "DOWN Detailed",
+      "paper_reference": "Table III Action 7 (DOWN Detailed)",
+      "affected_parameters": [
+        "max_displacement",
+        "site_search_window"
+      ],
+      "parameter_types": [
+        "Numeric integer",
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Detailed",
+        "Detailed"
+      ],
+      "update_rule": "Decrease detailed displacement and site window by delta",
+      "openroad_implementation": "Decrease max_displacement (-10) and site_search_window (-10)"
+    },
+    {
+      "action_id": 8,
+      "action_name": "UP Legalization Constraints",
+      "paper_reference": "Table III Action 8 (UP Global / Focus)",
+      "affected_parameters": [
+        "max_displacement"
+      ],
+      "parameter_types": [
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Detailed"
+      ],
+      "update_rule": "Tighten displacement bounds (UP search bounds)",
+      "openroad_implementation": "Increase max_displacement (+10)"
+    },
+    {
+      "action_id": 9,
+      "action_name": "DOWN Legalization Constraints",
+      "paper_reference": "Table III Action 9 (DOWN Global / Focus)",
+      "affected_parameters": [
+        "max_displacement"
+      ],
+      "parameter_types": [
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Detailed"
+      ],
+      "update_rule": "Relax displacement bounds (DOWN search bounds)",
+      "openroad_implementation": "Decrease max_displacement (-10)"
+    },
+    {
+      "action_id": 10,
+      "action_name": "INVERT-MIX search windows",
+      "paper_reference": "Table III Action 10 (INVERT-MIX timing vs. congestion vs. WL)",
+      "affected_parameters": [
+        "site_search_window",
+        "row_search_window"
+      ],
+      "parameter_types": [
+        "Numeric integer",
+        "Numeric integer"
+      ],
+      "parameter_focus": [
+        "Detailed",
+        "Effort"
+      ],
+      "update_rule": "Inverts normalized emphasis between horizontal (site) and vertical (row) search windows",
+      "openroad_implementation": "Swap normalized levels of site_search_window and row_search_window"
+    },
+    {
+      "action_id": 11,
+      "action_name": "DO NOTHING",
+      "paper_reference": "Table III Action 11 (DO NOTHING)",
+      "affected_parameters": [],
+      "parameter_types": [],
+      "parameter_focus": [],
+      "update_rule": "No modification. 5 consecutive NOTHING actions triggers environment reset (Equation 24).",
+      "openroad_implementation": "Retain current parameter state; increment consecutive NOTHING counter"
+    }
+  ]
+}

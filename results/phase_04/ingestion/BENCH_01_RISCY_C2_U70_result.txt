@@ -1,0 +1,9 @@
+benchmark_id: BENCH_01_RISCY_C2_U70
+def_path: /workspace/dataset/processed/DEF_decompressed/DEF/1-RISCY-a-1-c2-u0.7-m1-p1-f0.def
+normal_status: FAILED
+normal_error: ODB-0421
+continue_status: FAILED
+continue_error: ODB-0251
+num_insts: 0
+num_nets: 0
+num_bterms: 0

@@ -1,0 +1,21 @@
+quantity_name,category,source_or_method,justification_and_limitations
+cell_width_height,DIRECT,circuitnet.lef,Directly extracted from MACRO SIZE statements in LEF (2000 DBU/um).
+cell_area,DIRECT,circuitnet.lef,Calculated as width * height directly from LEF geometry.
+cell_pins_and_directions,DIRECT,circuitnet.lef,Directly extracted from PIN and DIRECTION statements in LEF.
+layer_geometry_and_rules,DIRECT,circuitnet.lef,Layers M1-M8 and pitches/widths are parsed directly from LEF.
+component_placement_coordinates,DIRECT,def_and_npy,Exact (x y) coordinates given in DEF COMPONENTS and placement.npy.
+routing_tracks_and_die_area,DIRECT,circuitnet.def,Extracted from DIEAREA and TRACKS in DEF.
+hpwl_wirelength,DERIVED,analytical_calc,Half-Perimeter Wirelength computed deterministically from placed pin/instance coordinates.
+bounding_box_area,DERIVED,analytical_calc,Delta_X * Delta_Y bounding box per net computed from instance pin placements.
+net_degree_and_fanout,DERIVED,netlist_and_def,Exact number of sink pins driven per net derived from graph/DEF topology.
+pin_pitch_and_density,DERIVED,lef_and_npy,Pin spacing and local pin congestion density derived from cell locations and LEF pin offsets.
+elmore_wire_delay_proxy,PROXY,rc_proxy.py,Geometric RC tree delay proxy using normalized technology resistance/capacitance per unit length.
+normalized_wire_capacitance_proxy,PROXY,rc_proxy.py,Wire capacitance proportional to Manhattan wirelength (Cw_norm * L) assuming standard 28nm interconnect proxy constants.
+normalized_wire_resistance_proxy,PROXY,rc_proxy.py,Wire resistance proportional to Manhattan wirelength (Rw_norm * L) assuming standard 28nm interconnect proxy constants.
+timing_criticality_proxy,PROXY,rc_proxy.py,Heuristic proxy based on topological depth and high-fanout net wirelength.
+openroad_physical_db,EXTERNAL,OpenROAD_Docker,OpenROAD OpenDB parses LEF and DEF (-continue_on_errors) for layout extraction.
+opensta_timing_engine_auxiliary,EXTERNAL,OpenSTA_Docker_Nangate45,OpenSTA executes full sign-off timing ONLY when paired with open-source libs (e.g. Nangate45/ASAP7) for smoke testing.
+signoff_cell_delay_tsmc28,UNAVAILABLE,TSMC_proprietary,Proprietary TSMC 28nm Liberty (.lib) non-linear delay models (NLDM/CCS) are absent.
+signoff_slack_wns_tns_tsmc28,UNAVAILABLE,TSMC_proprietary,Requires TSMC 28nm .lib and proprietary SDC constraints.
+signoff_spef_parasitics_tsmc28,UNAVAILABLE,TSMC_proprietary,Extracted SPEF parasitic corner files are absent in CircuitNet dataset.
+signoff_dynamic_power_tsmc28,UNAVAILABLE,TSMC_proprietary,Requires switching activity (VCD/SAIF) and Liberty power models.

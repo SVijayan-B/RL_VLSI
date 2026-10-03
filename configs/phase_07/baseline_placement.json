@@ -1,0 +1,87 @@
+{
+  "description": "Baseline placement configuration for Phase 7 reproducing Phase 4 legalization controls",
+  "version": "1.0.0",
+  "command": "detailed_placement",
+  "parameters": {
+    "max_displacement": 0,
+    "disallow_one_site_gaps": false,
+    "site_search_window": 0,
+    "row_search_window": 0,
+    "use_diamond_legalizer": false,
+    "disable_window_extension": false
+  },
+  "parameter_metadata": {
+    "max_displacement": {
+      "type": "Numeric integer (sites)",
+      "focus": "Detailed",
+      "legal_range": [
+        0,
+        100
+      ],
+      "step": 10,
+      "source": "OpenROAD detailed_placement -max_displacement",
+      "analog_to_paper": "eco max distance"
+    },
+    "disallow_one_site_gaps": {
+      "type": "Boolean",
+      "focus": "Detailed",
+      "legal_range": [
+        false,
+        true
+      ],
+      "step": "FLIP",
+      "source": "OpenROAD detailed_placement -disallow_one_site_gaps",
+      "analog_to_paper": "legalization gap"
+    },
+    "site_search_window": {
+      "type": "Numeric integer (sites)",
+      "focus": "Detailed",
+      "legal_range": [
+        0,
+        100
+      ],
+      "step": 10,
+      "source": "OpenROAD detailed_placement -site_search_window",
+      "analog_to_paper": "wire length opt"
+    },
+    "row_search_window": {
+      "type": "Numeric integer (rows)",
+      "focus": "Detailed + Effort",
+      "legal_range": [
+        0,
+        20
+      ],
+      "step": 2,
+      "source": "OpenROAD detailed_placement -row_search_window",
+      "analog_to_paper": "congestion effort"
+    },
+    "use_diamond_legalizer": {
+      "type": "Boolean",
+      "focus": "Detailed",
+      "legal_range": [
+        false,
+        true
+      ],
+      "step": "FLIP",
+      "source": "OpenROAD detailed_placement -use_diamond_legalizer",
+      "analog_to_paper": "eco priority"
+    },
+    "disable_window_extension": {
+      "type": "Boolean",
+      "focus": "Detailed",
+      "legal_range": [
+        false,
+        true
+      ],
+      "step": "FLIP",
+      "source": "OpenROAD detailed_placement -disable_window_extension",
+      "analog_to_paper": "uniform density"
+    }
+  },
+  "benchmarks_applicable": [
+    "BENCH_01_RISCY_C2_U70",
+    "BENCH_02_RISCY_C2_U90",
+    "BENCH_03_RISCY_C5_U70",
+    "BENCH_04_RISCY_C20_U70"
+  ]
+}

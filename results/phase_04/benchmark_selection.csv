@@ -1,0 +1,5 @@
+benchmark_id,design,category,def_file,def_path,netlist_file,netlist_path,utilization,macro_placement,power_mesh,filler,def_size_bytes
+BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,primary_baseline_low_util,1-RISCY-a-1-c2-u0.7-m1-p1-f0.def,dataset/processed/DEF_decompressed/DEF/1-RISCY-a-1-c2-u0.7-m1-p1-f0.def,RISCY-a-1-c2.v,dataset/processed/netlists/netlist/RISCY-a-1-c2.v,0.7,1,1,0,54722108
+BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,high_density_stress,120-RISCY-a-1-c2-u0.9-m1-p1-f0.def,dataset/processed/DEF_decompressed/DEF/120-RISCY-a-1-c2-u0.9-m1-p1-f0.def,RISCY-a-1-c2.v,dataset/processed/netlists/netlist/RISCY-a-1-c2.v,0.9,1,1,0,54263262
+BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,medium_clock_baseline,248-RISCY-a-1-c5-u0.7-m1-p1-f0.def,dataset/processed/DEF_decompressed/DEF/248-RISCY-a-1-c5-u0.7-m1-p1-f0.def,RISCY-a-1-c5.v,dataset/processed/netlists/netlist/RISCY-a-1-c5.v,0.7,1,1,0,53971539
+BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,relaxed_clock_baseline,493-RISCY-a-1-c20-u0.7-m1-p1-f0.def,dataset/processed/DEF_decompressed/DEF/493-RISCY-a-1-c20-u0.7-m1-p1-f0.def,RISCY-a-1-c20.v,dataset/processed/netlists/netlist/RISCY-a-1-c20.v,0.7,1,1,0,53943372

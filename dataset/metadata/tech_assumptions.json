@@ -1,0 +1,59 @@
+{
+  "lef_file": "dataset/raw/circuitnet.lef",
+  "lef_version": "5.7",
+  "database_units_per_micron": 2000,
+  "manufacturing_grid_micron": 0.005,
+  "sites": {
+    "CoreSite": {
+      "name": "CoreSite",
+      "class": "CORE",
+      "size": null,
+      "width": 0.21,
+      "height": 1.05
+    }
+  },
+  "layers_summary": {
+    "total_layers": 18,
+    "routing_layers": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "AP"
+    ],
+    "cut_layers": [
+      "CO",
+      "VIA1",
+      "VIA2",
+      "VIA3",
+      "VIA4",
+      "VIA5",
+      "VIA6",
+      "VIA7",
+      "RV"
+    ]
+  },
+  "rc_data_in_lef": {
+    "wire_resistance_present": false,
+    "wire_capacitance_present": false,
+    "wire_thickness_present": true
+  },
+  "timing_data_in_lef": {
+    "liberty_timing_present": false,
+    "pin_capacitance_present": false,
+    "pin_transition_present": false
+  },
+  "scientific_classification_policy": {
+    "geometric_properties": "DIRECT (from LEF)",
+    "pin_connectivity": "DIRECT (from circuit_graph / netlist)",
+    "placement_coordinates": "DIRECT (from instance_placement)",
+    "wirelength_hpwl": "DERIVED (from placement bounding boxes)",
+    "wire_resistance_capacitance": "PROXY (analytical Elmore / normalized RC models)",
+    "timing_delay_slack": "PROXY (normalized wirelength/RC proxy without sign-off STA claim)",
+    "proprietary_tsmc_timing": "UNAVAILABLE (withheld in public CircuitNet N28)"
+  }
+}

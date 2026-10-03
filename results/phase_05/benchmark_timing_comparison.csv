@@ -1,0 +1,5 @@
+benchmark_id,design,target_utilization,initial_hpwl_um,legalized_hpwl_um,hpwl_change_pct,initial_mean_delay_ps,legalized_mean_delay_ps,delay_change_pct,legalization_status
+BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,0.7,711584.0,731162.9,2.75,5.9373450000000005,6.1,2.75,SUCCESS
+BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,0.9,609283.7,708651.3,16.31,4.76919,5.55,16.31,SUCCESS
+BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,0.7,682561.6,701234.8,2.74,5.90319,6.06,2.74,SUCCESS
+BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,0.7,681942.5,700395.9,2.71,5.91048,6.07,2.71,SUCCESS

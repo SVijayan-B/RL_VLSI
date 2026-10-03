@@ -1,0 +1,42 @@
+{
+  "model_audit": {
+    "version": "1.0.0",
+    "target_module": "src.technology.rc_proxy",
+    "classification": "ANALYTICAL_NORMALIZED_PROXY",
+    "foundry_data_status": "ABSENT_PROPRIETARY",
+    "parameters": {
+      "r_unit": {
+        "value": 0.25,
+        "units": "Ohm / micron",
+        "description": "Normalized wire resistance proxy parameter"
+      },
+      "c_unit": {
+        "value": 1.8e-16,
+        "units": "Farad / micron",
+        "description": "Normalized wire capacitance proxy parameter (0.18 fF/um)"
+      },
+      "c_gate_default": {
+        "value": 5.0e-16,
+        "units": "Farad",
+        "description": "Proxy standard cell input load capacitance (0.50 fF)"
+      },
+      "r_driver_default": {
+        "value": 450.0,
+        "units": "Ohm",
+        "description": "Proxy standard cell driver output impedance"
+      }
+    },
+    "equations": {
+      "r_wire": "max(0.0, wirelength_um) * r_unit",
+      "c_wire": "max(0.0, wirelength_um) * c_unit",
+      "total_sink_c": "max(1, fanout) * c_gate_default",
+      "elmore_delay_seconds": "r_driver * (c_wire + total_sink_c) + 0.5 * r_wire * c_wire + r_wire * total_sink_c",
+      "output_units": "picoseconds (ps)"
+    },
+    "terminology_correction": {
+      "deprecated_term": "calibrated 28nm typical metal stack constants",
+      "approved_term": "analytical normalized RC proxy parameters",
+      "justification": "CircuitNet N28 does not include foundry TSMC 28nm .lib or .spef. Values represent an idealized monotonic surrogate for relative ranking."
+    }
+  }
+}

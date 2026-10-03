@@ -1,0 +1,50 @@
+[
+  {
+    "benchmark_id": "BENCH_01_RISCY_C2_U70",
+    "design": "RISCY-a-1-c2",
+    "def_file": "1-RISCY-a-1-c2-u0.7-m1-p1-f0.def",
+    "normal_ingest_status": "FAILED",
+    "normal_ingest_error": "[WARNING ODB-0177] error: undefined via (VIA12_square) referenced",
+    "continue_ingest_status": "PASSED",
+    "retained_instances": 52147,
+    "retained_nets": 55403,
+    "retained_terminals": 563,
+    "via_policy_applied": "continue_on_errors (no via fabrication)"
+  },
+  {
+    "benchmark_id": "BENCH_02_RISCY_C2_U90",
+    "design": "RISCY-a-1-c2",
+    "def_file": "120-RISCY-a-1-c2-u0.9-m1-p1-f0.def",
+    "normal_ingest_status": "FAILED",
+    "normal_ingest_error": "[WARNING ODB-0177] error: undefined via (VIA12_square) referenced",
+    "continue_ingest_status": "PASSED",
+    "retained_instances": 52005,
+    "retained_nets": 55267,
+    "retained_terminals": 563,
+    "via_policy_applied": "continue_on_errors (no via fabrication)"
+  },
+  {
+    "benchmark_id": "BENCH_03_RISCY_C5_U70",
+    "design": "RISCY-a-1-c5",
+    "def_file": "248-RISCY-a-1-c5-u0.7-m1-p1-f0.def",
+    "normal_ingest_status": "FAILED",
+    "normal_ingest_error": "[WARNING ODB-0177] error: undefined via (VIA12_square) referenced",
+    "continue_ingest_status": "PASSED",
+    "retained_instances": 49987,
+    "retained_nets": 53304,
+    "retained_terminals": 563,
+    "via_policy_applied": "continue_on_errors (no via fabrication)"
+  },
+  {
+    "benchmark_id": "BENCH_04_RISCY_C20_U70",
+    "design": "RISCY-a-1-c20",
+    "def_file": "493-RISCY-a-1-c20-u0.7-m1-p1-f0.def",
+    "normal_ingest_status": "FAILED",
+    "normal_ingest_error": "[WARNING ODB-0177] error: undefined via (VIA12_square) referenced",
+    "continue_ingest_status": "PASSED",
+    "retained_instances": 49931,
+    "retained_nets": 53248,
+    "retained_terminals": 563,
+    "via_policy_applied": "continue_on_errors (no via fabrication)"
+  }
+]

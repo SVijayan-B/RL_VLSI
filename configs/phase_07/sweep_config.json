@@ -1,0 +1,61 @@
+{
+  "description": "Parameter sweep configuration for Phase 7 sensitivity analysis",
+  "version": "1.0.0",
+  "strategy": "OFAT (One-Factor-At-A-Time)",
+  "benchmarks": [
+    "BENCH_01_RISCY_C2_U70",
+    "BENCH_02_RISCY_C2_U90",
+    "BENCH_03_RISCY_C5_U70",
+    "BENCH_04_RISCY_C20_U70"
+  ],
+  "parameters_to_sweep": {
+    "max_displacement": [
+      0,
+      10,
+      30,
+      60
+    ],
+    "site_search_window": [
+      0,
+      10,
+      30,
+      60
+    ],
+    "row_search_window": [
+      0,
+      2,
+      6,
+      12
+    ],
+    "disallow_one_site_gaps": [
+      false,
+      true
+    ],
+    "use_diamond_legalizer": [
+      false,
+      true
+    ],
+    "disable_window_extension": [
+      false,
+      true
+    ]
+  },
+  "pairwise_interaction_parameters": [
+    {
+      "param_a": "max_displacement",
+      "values_a": [
+        0,
+        20,
+        50
+      ]
+    },
+    {
+      "param_b": "site_search_window",
+      "values_b": [
+        0,
+        20,
+        50
+      ]
+    }
+  ]
+}

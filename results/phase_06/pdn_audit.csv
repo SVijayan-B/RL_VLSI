@@ -1,0 +1,9 @@
+def_file,p_setting,has_specialnets,specialnets_count,power_net_names,ground_net_names,all_specialnet_names,pdn_layers,stripe_records_count,via_records_count,sufficient_for_geometric_pdn
+1-RISCY-a-1-c2-u0.7-m1-p1-f0.def,p1,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,16623,21257,True
+2-RISCY-a-1-c2-u0.7-m1-p2-f0.def,p2,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,16822,21558,True
+3-RISCY-a-1-c2-u0.7-m1-p3-f0.def,p3,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,19634,24310,True
+4-RISCY-a-1-c2-u0.7-m1-p4-f0.def,p4,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,19723,23882,True
+5-RISCY-a-1-c2-u0.7-m1-p5-f0.def,p5,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,18583,23313,True
+6-RISCY-a-1-c2-u0.7-m1-p6-f0.def,p6,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,17226,22203,True
+7-RISCY-a-1-c2-u0.7-m1-p7-f0.def,p7,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,22855,27859,True
+8-RISCY-a-1-c2-u0.7-m1-p8-f0.def,p8,True,2,VDD,VSS,VDD;VSS,M1;M2;M3;M4;M5;M6;M7;M8,21845,26169,True

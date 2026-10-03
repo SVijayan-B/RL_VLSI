@@ -1,0 +1,1391 @@
+=== PAGE 1 ===
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023 1295
+Parameter Optimization of VLSI Placement
+Through Deep Reinforcement Learning
+Anthony Agnesina , Kyungwook Chang , Member, IEEE, and Sung Kyu Lim, Senior Member, IEEE
+Abstract—Critical to achieving power–performance–area
+goals, a human engineer typically spends a considerable amount
+of time tuning the multiple settings of a commercial placer. This
+article proposes a deep reinforcement learning (RL) framework
+to optimize the placement parameters of a commercial electronic
+design automation (EDA) tool. We build an autonomous agent
+that learns to tune parameters without human intervention and
+domain knowledge, trained solely by RL from self-search. To
+generalize to unseen netlists, we use a mixture of handcrafted
+features from graph topology theory and graph embeddings
+generated using unsupervised graph neural networks. Our RL
+algorithms are chosen to overcome the sparsity of data and
+latency of placement runs. As a result, our trained RL agent
+achieves up to 11% and 2 .5% wire length improvements on
+unseen netlists compared with a human engineer and a state-of-
+the-art tool auto-tuner in just one placement iteration (20 × and
+50× fewer iterations). In addition, the success of the RL agent is
+measured using a statistical test with theoretical guarantees and
+an optimized sample size.
+Index Terms—Deep learning, physical design, very-large-scale
+integration (VLSI) placement.
+I. I NTRODUCTION
+I
+N RECENT years, the combination of deep learning techniques
+with reinforcement learning (RL) principles has resulted in self-
+learning agents achieving superhuman performance in the game of
+Go, Shogi, and Chess [1]. Deep RL is also used with immense success
+in real-world applications, such as robotics, ﬁnance, and self-driving
+cars.
+The quality of very-large-scale integration (VLSI) placement is
+essential for the subsequent steps of physical design, with signiﬁcant
+repercussions on design quality and design closure. However, recent
+studies [ 2] show that existing placers cannot produce near-optimal
+solutions. The goal of a placement engine is to assign locations for
+the cells inside the chip’s area. The most common target of modern
+placers is to minimize the total interconnect length, i.e., the estimated
+half-perimeter wire length (HPWL) from the placed cells’ locations.
+The algorithms implemented inside the electronic design automa-
+tion (EDA) tools have parameter settings that users can modify to
+Manuscript received 12 July 2021; revised 17 January 2022, 26 April 2022,
+and 27 June 2022; accepted 7 July 2022. Date of publication 25 July 2022;
+date of current version 21 March 2023. This work was supported in part by
+the National Science Foundation under Grant CNS 16-24731, and in part by
+the Industry Members of the Center for Advanced Electronics in Machine
+Learning. This article was recommended by Associate Editor I. H.-R. Jiang.
+(Corresponding author: Anthony Agnesina.)
+Anthony Agnesina and Sung Kyu Lim are with the Department of Electrical
+and Computer Engineering, Georgia Institute of Technology, Atlanta,
+GA 30332 USA (e-mail: agnesina@gatech.edu; limsk@ece.gatech.edu).
+Kyungwook Chang is with the Department of Electrical and Computer
+Engineering, Sungkyunkwan University, Suwon 16419, South Korea (e-mail:
+k.chang@skku.edu).
+Digital Object Identiﬁer 10.1109/TCAD.2022.3193647
+achieve the desired power–performance–area (PPA). In the authors’
+experience, more time is spent tuning and running a commercial
+placer than creating a ﬁrst version of the design. Tools and ﬂows have
+increased in complexity, with the modern place and route tools offer-
+ing more than 10 000 parameter settings. Expert users are required,
+particularly for the latest technology nodes, with increased cost and
+risk. Indeed, as the design space of the parameters is too large and
+complex to be explored by a human engineer alone, one usually relies
+on expertise and domain knowledge when tuning. However, the cor-
+relations between the different parameters and the resulting PPA may
+be complex or nonintuitive. Placement engines may exhibit nonde-
+terministic behaviors as they heavily rely on handcrafted rules and
+metaheuristics. Moreover, the advertised goal of a parameter may not
+directly translate onto the targeted metric.
+A state-of-the-art tool auto-tuner [3] widely used in EDA leverages
+a multiarmed bandit (MAB) to organize a set of classical optimization
+techniques and efﬁciently explore the design space. However, these
+techniques rely on heuristics that are too general and do not consider
+the speciﬁcities of each netlist. Therefore, each new netlist requires
+to start over parameter exploration. We overcome this limitation in
+our RL agent by ﬁrst encoding the netlist information using a mix-
+ture of graph handcrafted features and graph neural network (GNN)
+embeddings. This helps generalize the tuning process from netlist to
+netlist, saving lengthy and costly placement iterations.
+Our RL framework aims to learn an optimization process that ﬁnds
+placement parameters minimizing wire length after placement. The
+main contributions of this article are as follows.
+1) We reduce the signiﬁcant time expense of VLSI develop-
+ment by applying deep RL to preset the placement parameters
+of a commercial EDA tool. This is the ﬁrst work on RL
+applied to placement parameters optimization to the best of
+our knowledge.
+2) We use a mixture of features relative to topological graph
+characteristics and graph embeddings generated by a GNN to
+train an RL agent capable of generalizing its tuning process to
+unseen netlists.
+3) Our RL algorithm overcomes the sparsity of data, and the
+latency of the design tool runs using multiple environments
+collecting experiences in parallel. Moreover, this fulﬁlls a mul-
+titask learning objective where graph features of a given netlist
+effectively represent it as a separate task.
+4) We build an autonomous agent that iteratively learns to tune
+parameter settings to optimize the placement without super-
+vised samples. We achieve better wire lengths on unseen
+netlists than a state-of-the-art auto-tuner, without additional
+training, and in just one placement iteration.
+5) We introduce an existing statistical methodology called the
+sequential probability ratio test (SPRT), which we use to
+test a set of speciﬁcally tailored hypotheses to measure and
+benchmark the superiority of our trained RL agent.
+1937-4151 c© 2022 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 2 ===
+1296 IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023
+II. R ELATED WORK
+We review the relevant previous works, presenting two approaches
+to optimize the parameters of an EDA engine, categorized into works
+on 1) classical hyperparameter/black-box optimization that has exten-
+sive study in the literature and 2) a method that views optimization
+through the lens of learning, which is recent and largely unused in
+EDA applications.
+A. Classical Tuning Methods
+Optimizing the parameters of a singular step or the full EDA
+ﬂow can be seen as an instance of hyperparameter tuning, which
+has been researched exhaustively in machine learning (ML) due to
+its extreme importance in the success of neural networks. A met-
+ric function f is optimized through parameter search guided by an
+internal model. Bandit methods minimize the cumulative regret, i.e.,
+the deviation from the optimal value E[∑T
+t=1(f(x⋆)−f(xt))], through
+a sequence of online function queries. For instance, Ustun et al. [4]
+proposed a multistage FPGA autotuning system by augmenting a
+bandit framework [ 3] with a timing regression model to select the
+future conﬁgurations to evaluate. In Bayesian optimization [ 5], f is
+assumed to be drawn from a distribution, often a Gaussian process.
+The posterior built on noisy evaluations of f helps pick the new
+point to select through optimizing an acquisition function. For exam-
+ple, Ziegler et al. [6] used Bayesian learning to build a scalable
+industrial ﬂow tuning for logic synthesis and physical design, while
+Kapre et al. [7] utilized this strategy to generate good quality FPGA
+CAD tool parameter sets. Some works, including [ 6], use precol-
+lected ofﬂine data to complement these generic optimization methods
+and improve sampling efﬁciency. In [ 8], an XGBoost model is built
+to learn parameter importance from already synthesized designs.
+Kwon et al. [9] built an online recommender system based on a
+QoR prediction model trained on archived design data obtained via
+iterative tuning.
+B. Learning to Optimize
+On the other side, learning to optimize (L2O) is a metamorpho-
+sis of traditional optimization methods, which, with ML, builds new
+optimizers whose behaviors do not follow a ﬁxed algorithm but are
+trained on sample data. Therefore, they can achieve faster conver-
+gence speeds than classical methods. In this paradigm, the searching
+point is updated iteratively by xt+1 = xt − g(zt, θ),w h e r eg(·, θ) is
+the update rule represented by an ML model and zt is the state of the
+optimization process at time t, an ensemble built from previous iter-
+ates zt ∝ f(xi≤t). The weighted sum of the objective function over
+a timespan is optimized ∑T
+t=1 wtf(xt) to improve the convergence
+speed. In most cases, wt = 1{t=T}(t).
+State-of-the-art methods, mathematical foundations, and critical
+challenges for L2O research are well summarized in [ 10]. The
+best models rely on a recurrent network trained with policy gra-
+dient, whose recurrent nature helps mimic the update rule of a
+sequential gradient-based optimizer. This emerging approach, sup-
+plemented with a multitask learning methodology, forms the basis of
+our work.
+III. RL E NVIRONMENT
+A. Placement Problem
+The purpose of this work is to indirectly solve the classical VLSI
+placement problem, which we formulate as follows.
+Placement is one of the most critical steps in VLSI design because
+it determines the landscape of a silicon chip and heavily inﬂuences
+the subsequent circuit optimizations [ 11]. However, solving a place-
+ment problem instance efﬁciently as a pure combinational task is
+difﬁcult per se , owing to its NP-completeness. Furthermore, the
+close interrelation between the many sequential steps of the physical
+design ﬂow makes obtaining a good placement quality increasingly
+difﬁcult [ 12]. For example, placing engines must simultaneously
+optimize conﬂicting cost metrics of silicon area, circuit performance,
+and power without violating on-chip overlap rules. Modern placing
+engines approach this conundrum using an analytical formulation to
+co-optimize the wire length subject to density constraints in a single
+quadratic or nonlinear cost function.
+Formally, given a hypergraph representation of the netlist, G =
+(V, E), where the vertices V ={ v1,..., vn} represent the cells and
+the hyperedges E ={ e1,..., em} represent the nets, an analytical
+placer targets the minimization problem
+minx,y
+{∑
+e∈E
+HPWL(e; x, y) + λD(x, y)
+}
+(1)
+where
+HPWL(e; x, y) = maxvi,vj∈e |xi − xj|+ maxvi,vj∈e |yi − yj| (2)
+is the HPWL, (x, y) are the 2-D cell locations, and the density func-
+tion D ensures no overlaps among cells through the progressive
+increase of the Lagrange multiplier λ.
+In this work, we do not propose a new placer. Instead, appre-
+ciating the high-quality placements offered by commercial engines,
+we propose leveraging them while taking advantage of their sizeable
+parametrizable space and its opportunity for PPA gains. Traditionally,
+experienced designers expend signiﬁcant time searching manually in
+a wide range of candidate parameters through iterative trial and error
+to ﬁnd tool parameter settings that satisfy their PPA goals. However,
+owing to the vast design space and cost of PPA evaluations from
+hours to days, only a tiny portion of the possible parameter sets can
+be explored, resulting in suboptimal designs. Furthermore, due to
+the latency, complexity, and unpredictability of tool outcomes, tradi-
+tional black-box optimization methods, such as Simulated Annealing
+and Genetic Algorithms (GAs), are insufﬁcient to obtain high-quality
+design implementations. Thus, we propose using RL to automatize
+the time-consuming tuning of placement parameters and exploit deep
+ML techniques to generalize the tuning process to unseen netlists.
+B. Overview
+We build an RL agent that tunes the parameter settings of the
+placement tool autonomously, intending to minimize wire length. Our
+RL problem consists of the following four key elements.
+1) States: The set of all netlists in the world ( N) and all possible
+parameter settings combinations ( P) from the placement tool
+(e.g., Cadence Innovus or Synopsys ICC2). A single state s
+consists of a unique netlist and a current parameter set.
+2) Actions: The set of actions that the agent can use to modify
+the current parameters. An action a changes the setting of a
+subset of parameters.
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 3 ===
+AGNESINA et al.: PARAMETER OPTIMIZATION OF VLSI PLACEMENT THROUGH DEEP RL 1297
+Fig. 1. RL agent–environment interaction in the proposed methodology.
+3) State Transition: Given a state (st) and an action, the next state
+(st+1) is the same netlist with updated parameters.
+4) Reward: Minus the HPWL output from the commercial EDA
+placement tool. The reward increases if the action improves
+the parameter settings in terms of minimizing wire length.
+As depicted in Fig. 1,i nR L ,a n agent learns from interacting with
+its environment over a number of discrete time steps. At each time
+step t, the agent receives a state st and selects an action at from a
+set of possible actions A according to its policy π,w h e r eπ maps
+states to actions. In return, the agent receives a reward signal Rt and
+transitions to the next state st+1. This process continues until the
+agent reaches a terminal state, after which the process restarts. The
+goal of the agent is to maximize its long-term return
+Gt =
+∞∑
+k=0
+γ kRt+k+1 (3)
+where γ is a factor discounting future rewards.
+An optimal policy is one that maximizes the expected returns or
+values. The value function vπ(st) is the expected return starting from
+state st when following policy π, of the form:
+vπ (st) = Eπ [Gt|st] = Eπ
+⎡
+⎣
+∞∑
+k=0
+γ kRt+k+1|st
+⎤
+⎦. (4)
+C. Our RL Settings
+We formulate the placement parameters optimization task led by
+an RL agent as follows.
+This is a combinatorial optimization problem where P is very
+large and exhaustive search is infeasible.
+We now present a more formal deﬁnition of the problem at hand
+and our proposed approach. Given a netlist n,w ew i s ht oﬁ n d
+p∗ = arg maxp∈P PPAtool(n, p),w h e r eP is the space of all param-
+eter sets, and PPAtool is the EDA tool output. In this work, the latter
+corresponds to − HPWL but could be any metric of interest in all
+generality. The black-box function PPAtool is not directly available to
+the learner and can only be evaluated at a query point (n, p).T h e s e
+queries are expensive in terms of runtime and computing resources.
+To ﬁnd p∗,w eﬁ r s td e ﬁ n est = (n, pt) as the state at timestep
+t (≡ query). An action at turns pt into pt+1. The environment is
+then queried by running the commercial tool with parameters pt+1
+for netlist n. The reward is returned as Rt, a stochastic evaluation
+of PPAtool(n, pt+1). The new state is now st+1 = (n, pt+1).A f t e rL
+evaluations, we output our best guess pGuess = p(L), which could be
+different from pL.
+We posit that this modiﬁed problem can be reduced to learning a
+sequential optimizer represented as an optimal policy π∗ prescribing
+the optimal action to take in a speciﬁc state. The optimizer should
+learn the optimization process for all possible netlists N.G i v e na
+new netlist n′, an optimal parameter set is obtained as
+p∗(n′) = aL
+(
+aL−1(··· a0(p0) ... )
+)
+(5)
+where ai = π∗(n′, pi). In that context, a policy π is considered
+optimal if it maximizes the expectation
+En∼N
+[
+PPAtool(n, pGuess)
+]
+(6)
+where pGuess is found on the trajectory following π.
+For an agent to correctly select an action, we must ﬁrst deﬁne a
+good representation of its environment. In our case, the representation
+of the environment is given by a human expert as presented.
+D. Our States
+We deﬁne our state as the joint values of 12 placement param-
+eters from Cadence Innovus used to perform the current placement
+(Table I) and information metrics on the netlist being placed. The
+netlist information consists of a mixture of metadata knowledge (e.g.,
+number of cells and ﬂoorplan area) with topological graph features
+(Table II) and unsupervised features extracted using a GNN. Netlist
+characteristics are essential to transfer the knowledge across very
+different netlists so that our agent generalizes its tuning process to
+unseen netlists. Indeed, the optimal policy is likely related to each
+netlist’s particularities. Thus, our state can be written as a con-
+catenation of one-hot encoded categorical parameters (Booleans or
+enumerates), integer parameters, and integer and ﬂoat netlist features.
+We carefully selected the placement parameters among the 60
+available ones in the software. We pruned the ones not relevant to our
+study; we do not, for example, consider structured data paths, ﬁllers,
+scan chains, shifters, and IR drops. Our goal is a proof of concept and
+to show RL methods’ applicability to the design space exploration of
+commercial VLSI tools knobs. Thus, we picked the 12 most common
+parameters understood even by inexperienced designers. Moreover,
+the small number of these makes action deﬁnition simpler, while a
+large number of these would result in a much larger space and an
+impractical deﬁnition of actions for our proof-of-concept purpose.
+We transform the synthesized netlists into graphs using the model
+s h o w ni nF i g .2. The resulting abstract graph G = (V, E) is as fol-
+lows. For each net e in the netlist with driving cell se and load cells
+{t0,..., tn}e, we create a directed edge in G per pair (se, ti).T h i s
+edge-based representation versus hyperedge-based makes applying
+standard graph algorithms to the netlist easy. The directed nature of
+the graph represents the natural ﬂow of electrical signals of the nets
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 4 ===
+1298 IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023
+TABLE I
+12 TARGETED PLACEMENT PARAMETERS .T HE SOLUTION SPACE IS 1013 · 36 · 23 = 6x1 09
+TABLE II
+OUR 20 H ANDCRAFTED NETLIST FEATURES
+Fig. 2. Our netlist to graph transformation.
+from source to sinks. The directed nature of the graph is necessary for
+the correct deﬁnition of graph characteristics proposed, such as the
+logic levels. However, this representation is switched to undirected
+when needed by other graph algorithms.
+We propose two ways to extract meaningful features from this
+graph representation.
+1) Topological Graph Features: We borrow concepts from graph
+theory to learn rich graph representations that uniquely classify each
+graph. We use Boost and BLAS optimized C ++ libraries to extract
+our features efﬁciently on large graphs—collected in less than 1 h
+for the larger netlists. Let G = (V, E) be the directed cyclic graph
+representing the netlist obtained using the above model. Global sig-
+nals, such as reset, clock, or VDD/VSS, are not considered when
+building the graph. Multiple connections between two vertices in the
+graph are merged, and self-loops are eliminated. We consider the
+following graph features to capture the netlist’s complex topology
+characteristics (e.g., connections and spectral).
+1) Strongly Connected Components (SCCs): A strong component
+of G is a subgraph S of G if for any pair of vertices u, v ∈ S
+there is a directed cycle in S containing u and v. We compute
+them in linear time using directed a depth-ﬁrst search with an
+algorithm due to Tarjan [ 13].
+2) Clique: Given an integer m, does G contains Km (the complete
+graph on m vertices) as a subgraph? We use the Bron–Kerbosch
+algorithm [14] to ﬁnd the maximal cliques.
+3) k-Colorability: G i v e na ni n t e g e rk, is there a coloring of G with
+k or fewer colors? A coloring is a map χ : V → C such as two
+adjacent vertices have the same color; i.e., if (u, v) ∈ E,t h e n
+χ(u) ⁄= χ(v). Minimum k (the chromatic number) is computed
+using a technique proposed in [ 15].
+4) Logic Levels: What is the maximum distance (# gates tra-
+versed) between two ﬂip-ﬂops? LL = maxa,b∈FFs d(a, b).
+5) Rich Club Coefﬁcient: How well do high-degree (rich) nodes
+know each other? Let Gk = (Vk, Ek) be the ﬁltered graph
+of G with only nodes of degree > k,t h e nR C C k =
+([2|Ek|]/[|Vk|(|Vk|− 1)]) [16].
+6) Clustering Coefﬁcient: A measure of the cliquishness of nodes
+neighborhoods [17] of the form
+CC = 1
+|V|
+∑
+i∈V
+|ejk : vj, vk ∈ Neighbors(i), ejk ∈ E|
+deg(i)(deg(i) − 1) . (7)
+7) Spectral Characteristics: Using the implicitly restarted Arnoldi
+method [ 18], we extract from the Laplacian matrix of G the
+Fiedler value (second smallest eigenvalue) deeply related to
+the connectivity properties of G, as well as the spectral radius
+(largest eigenvalue) relative to the regularity of G.
+These features give crucial information about the netlist. For exam-
+ple, connectivity features, such as SCC, maximal clique, and RCC,
+are essential to capture congestion considerations (considered dur-
+ing placement reﬁnement), while logic levels indirectly translate the
+difﬁculty of meeting timing by extracting the longest logic path.
+2) Features From Graph Neural Network: Starting from sim-
+ple node features, including degree, fanout, area, and encoded gate
+type, we generate node embeddings ( ENC(v)) using unsupervised
+GraphSAGE [19] with convolutional aggregation, dropout, and out-
+put size of 32. The GNN algorithm iteratively propagates information
+from a node to its neighbors. The GNN is trained on each graph indi-
+vidually. Then, the graph embedding ( ENC(G)) is obtained from the
+node embeddings with a permutation invariant aggregator, as shown
+in Fig. 3
+ENC(G) = MEAN (ENC(v)|v ∈ V) (8)
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 5 ===
+AGNESINA et al.: PARAMETER OPTIMIZATION OF VLSI PLACEMENT THROUGH DEEP RL 1299
+Fig. 3. Graph embedding using a GNN package GraphSAGE [ 19]. We ﬁrst
+extract 32 features for each node in the graph. Next, we calculate the mean
+among all nodes for each feature, resulting in 32 features for the entire graph.
+Fig. 4. t-SNE visualization [ 20] of our 20 handcrafted plus 32 GNN features
+combined. Points representative of each netlist are well separated, proving
+graph features capture the differences between netlists well.
+where the individual node embeddings are obtained after K recurrent
+updates
+⎧
+⎪⎨
+⎪⎩
+x(0)
+v = (degree(v), fanout(v), area(v), type(v) ,..., )
+x(k+1)
+v = /Psi1(x(k)
+v ,ρ( {x(k)
+u :e = (v, u) ∈ E}))
+ENC(v) = x(K)
+v .
+(9)
+Function ρ aggregates features of neighboring nodes, and function
+/Psi1concatenates the node’s current representation with the aggre-
+gated neighborhood information, which it then nonlinearizes and
+normalizes.
+The t-SNE projection in two dimensions [20] of the vector of graph
+features is displayed in Fig. 4. We see that all netlists’ points are far
+apart, indicating that the combination of our handcrafted and learned
+graph features distinguishes well the particularities of each netlist.
+E. Our Actions
+The state-of-the-art parameter auto-tuner presented in [ 3]u s e sa
+MAB whose arms are classical search techniques, such as Simulated
+Annealing and GAs. Each technique modiﬁes parameter sets differ-
+ently, while the MAB algorithm tries to determine the arm with the
+highest expected reward quickly. Parameter search is done by select-
+ing a search technique one at a time, where the selection is based on
+a credit assignment score that mixes exploration and exploitation.
+We considered the possibility of using these search arms as actions
+in our RL framework. The problem with this option is that a fun-
+damental assumption in RL tasks is that the Markov property of
+memorylessness holds; i.e., the optimal action should depend on the
+last state alone. This assumption is not valid for arms such as GA
+or any technique with population-based improvements which have a
+current state depending on all prior states. Instead, they memorize a
+population of one, usually the best, or multiple parameter settings to
+create a new candidate setting. In principle, this representation can
+TABLE III
+OUR 11 ACTIONS
+be made Markovian by aggregating all parameters evaluated into one
+state. However, this aggregation can produce a state representation
+impractically too large.
+We thus choose to deﬁne our own deterministic actions to change
+the setting of a subset of parameters. They render the state Markovian,
+i.e., given state–action pair (st, at), the resulting state st+1 is unique.
+An advantage of fully observed determinism is that it allows plan-
+ning. Starting from state s0 and following a satisfactory policy π,t h e
+trajectory
+s0
+π(s0)−−−→ s1
+π(s1)−−−→···
+π(sn−1)
+−−−−−→ sn (10)
+leads to a parameter set sn of good quality. If π has been learned,
+sn can be computed directly in O(1) time without performing any
+placement.
+Deﬁning only two actions per placement parameter would result
+in 24 different actions, too many for the agent to learn well. Thus,
+we ﬁrst decided to group variables per type (Boolean, Enumerate,
+Numeric) and per placement “focus” (Global, Detailed, Effort). Then,
+for each group, we deﬁne expressive yet straightforward actions such
+as FLIP for Booleans. For enumerates, DOWN ≡ “pass from high to
+medium,” for example. For an integral parameter value x deﬁned in a
+range [a, b], the updated value of actions UP/DOWN is obtained with
+the simple transformation x′= min(max(x±(b−a)/Delta1x0, a), b),w h e r e
+/Delta1x0 is a ﬁxed delta ∈ [0, 1] deﬁned per parameter. In the exper-
+iments, /Delta1{eco max distance }= 0.10, /Delta1{legalization gap}= 0.10,
+and /Delta1{max density}= 0.03. The smaller delta for max density
+accounts for its larger effect, observed empirically, on the HPWL.
+We also add one arm that does not modify the current set of param-
+eters. Instead, it triggers an environment’s reset if it gets picked
+multiple times in a row. This leads to the 11 different actions A
+presented in Table III. Our action space is designed to be as simple
+as possible to help neural network training but also expressive enough
+so that such transformations can reach any parameter settings.
+F . Our Reward Structure
+To learn with a single RL agent across various netlists with dif-
+ferent wire lengths, we cannot deﬁne a reward directly linear with
+HPWL. Thus, to help convergence, we adopt a normalized reward
+function that renders the magnitude of the value approximations
+similar among netlists, of the form
+Rt := HPWLHuman Baseline − HPWLt
+HPWLHuman Baseline
+. (11)
+While deﬁning rewards in this manner necessitates knowing
+HPWLHuman Baseline , an expected baseline wire length per design,
+this only requires one placement to be completed by an engineer.
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 6 ===
+1300 IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023
+IV . RL P LACEMENT AGENT
+A. Overview
+Using the deﬁnition of the environment presented in the previous
+section, we train an agent to tune the parameters of the placement
+tool autonomously. Here is our approach.
+1) The agent learns the optimal action for a given state. This
+action is chosen based on its policy network probability
+outputs.
+2) We adopt an actor–critic framework to train the policy network
+effectively, which brings the beneﬁts of value-based and policy-
+based optimization algorithms together.
+3) To solve the well-known shortcomings of RL in EDA of
+latency and sparsity, we implement multiple environments
+collecting different experiences in parallel.
+4) Our agent architecture utilizes a deep neural network com-
+prising a recurrent layer with an attention mechanism to
+enable learning a recursive optimization process with complex
+dependencies.
+B. Goal of Learning
+We choose to use policy-based RL from the many ways of learning
+how to behave in an environment. We state the formal deﬁnition of
+this problem as follows.
+This optimization problem aims to learn which action a to take in
+a speciﬁc state s. We represent the parametrized policy πθ by a deep
+neural network. The main reasons for choosing this framework are
+as follows.
+1) It is model-free, which is essential as the placer tool environ-
+ment is complex and challenging to model.
+2) Our intuition is that the optimal policy may be simple to learn
+and represent (e.g., keep increasing the effort), while the value
+of a parameter setting may not be trivial or change signiﬁcantly
+based on observation.
+3) Policy optimization often shows good convergence properties.
+4) A tabular version storing every state–action pair (st, at) and
+reward Rt would be too large to store in memory and too slow
+to learn the value of each state individually.
+5) A neural network is a universal approximator that has been
+shown to generalize well when the experience is not inde-
+pendent and identically distributed (i.i.d.) and nonstationary
+(successive states are correlated).
+C. How to Learn: The Actor–Critic Framework
+In our chosen architecture, we learn a policy that optimizes the
+value while learning the value simultaneously. For learning, it is
+often beneﬁcial to use as much knowledge observed from the envi-
+ronment as possible and hang off other predictions rather than solely
+predicting the policy. This type of framework, called actor–critic,i s
+s h o w ni nF i g .5. The policy is known as the actor because it is used
+to select actions, and the estimated value function is known as the
+critic because it criticizes the actions made by the actor.
+Fig. 5. Actor–critic framework. The critic learns about and critiques the
+actor’s current policy.
+Actor–critic algorithms combine value-based and policy-based
+methods. Value-based algorithms learn to approximate values
+vw(s) ≈ vπ (s) by exploiting the Bellman equation
+vπ (s) = E
+[
+Rt+1 + γ vπ (st+1)|st = s
+]
+(12)
+which is used in temporal difference (TD)
+/Delta1wt =
+(
+Rt+1 + γ vw(st+1) − vw(st)
+)
+∇wvw(st). (13)
+On the other hand, policy-based algorithms update a parameterized
+policy πθ(at|st) directly through stochastic gradient ascent in the
+direction of the value with
+/Delta1θt = Gt∇θ logπθ(at|st). (14)
+In actor–critic, the policy updates are computed from incomplete
+episodes by using truncated returns that bootstrap on the value
+estimate at state st+n according to vw,g i v e nb y
+G(n)
+t =
+n−1∑
+k=0
+γ kRt+k+1 + γ nvw(st+n). (15)
+This reduces the variance of the updates and propagates rewards
+faster. The variance can be further reduced using state-values as a
+baseline in policy updates, as in advantage actor–critic updates of
+the form
+/Delta1θt =
+(
+G(n)
+t − vw(st)
+)
+∇θ logπθ(at|st). (16)
+The critic updates parameters w of vw by n-step TD following (13),
+and the actor updates parameters θ of πθ in the direction suggested by
+the critic by policy gradient with (16). In this work, we use the advan-
+tage actor–critic method, A2C [21], which produced excellent results
+in diverse environments. As shown in ( 16), an advantage function
+formed as the difference between returns and baseline state–action
+estimate is used instead of raw returns. The advantage can be con-
+sidered a measure of how good a given action is compared to some
+average.
+D. Synchronous Actor/Critic Implementation
+The main issues plaguing the use of RL in EDA are the latency
+of tool runs (it takes minutes to hours to perform one placement)
+and the sparsity of data (there is no database of millions of netlists
+placed designs or layouts). We implement a parallel version of A2C
+to solve both issues, as depicted in Fig. 6. In this implementation,
+an agent learns from the experiences of multiple Actors interacting
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 7 ===
+AGNESINA et al.: PARAMETER OPTIMIZATION OF VLSI PLACEMENT THROUGH DEEP RL 1301
+Fig. 6. Synchronous parallel learner. The global network sends actions to
+the actors through the step model. Each actor gathers experiences from their
+own environment.
+in parallel with their copy of the environment. This conﬁguration
+increases the throughput of acting and learning and helps decorrelate
+samples during training for data efﬁciency [ 22].
+The learning updates may be applied synchronously or asyn-
+chronously in parallel training setups. We use a synchronous version,
+i.e., a deterministic implementation that waits for each Actor to ﬁnish
+its segment of experience (according to the current policy provided
+by the step model) before performing a single batch update to the
+network weights. One advantage is that it provides larger batch sizes,
+which are more effectively used by computing resources.
+The parallel training setup does not modify the equations presented
+before. Instead, the gradients are just accumulated among all the
+environments’ batches.
+E. Two-Head Network Architecture
+The actor–critic framework uses both policy and value models.
+The full agent network can be represented as a deep neural network
+(πθ, vw) = f(s). This neural network takes the state s = (p◦n) made
+of parameter values p and netlist features n and outputs a vector of
+action probabilities with components πθ(a) for each action a,a n da
+scalar value vw(s) estimating the expected cumulative reward G from
+state s.
+The policy tells us how to modify a placement parameter setting ,
+and the value network tells us how good this current setting is .W e
+share the body of the network to allow value and policy predictions to
+inform one another. The parameters are adjusted by gradient ascent
+on a loss function that sums over the losses of the policy and the
+value plus a regularization term, whose gradient is deﬁned as in [ 23]
+(
+G(n)
+t − vw(st)
+)
+∇θ log πθ(at|st)
+/bracehtipupleft /bracehtipdownright/bracehtipdownleft/bracehtipupright
+policy gradient
++
+β
+(
+G(n)
+t − vw(st)
+)
+∇wvw(st)
+/bracehtipupleft/bracehtipdownright/bracehtipdownleft/bracehtipupright
+value estimation gradient
++
+η
+∑
+a
+πθ(a|st) logπθ(a|st)
+/bracehtipupleft/bracehtipdownright/bracehtipdownleft/bracehtipupright
+entropy regularization
+.
+(17)
+The entropy regularization pushes entropy up to encourage explo-
+ration, and β and η are hyperparameters that balance the importance
+of the loss components.
+The complete architecture of our deep neural network is shown
+in Fig. 7. For value and policy predictions, the concatenation of
+placement parameters with graph extracted features is ﬁrst passed
+through two feedforward fully connected (FC) layers with tanh acti-
+vations, followed by an FC linear layer. This is followed by a long
+Fig. 7. Overall network architecture of our agent. Combining an LSTM with
+an attention mechanism enables learning a complex recurrent optimization
+process. Table IV provides the details of the subnetworks.
+short-term memory (LSTM) module with layer normalization and 16
+hidden standard units with Forget gate. The feedforward FC layers
+have no memory. The model can base its actions on previous states
+by introducing an LSTM in the network, which is a recurrent layer.
+This is motivated by the fact that traditional optimization methods are
+based on recurrent approaches. Moreover, we add a sequence-to-one
+global attention mechanism [ 24] inspired by state-of-the-art natural
+language processing architectures to help the recurrent layer (RNN)
+focus on essential parts of the recursion. Let ht be the hidden state of
+the RNN. Then, the attention alignment weights at with each source
+hidden state hs are deﬁned as
+at(s) =
+exp
+(
+score(ht, hs)
+)
+∑
+s′exp
+(
+score(ht, hs′)
+) (18)
+where the alignment score function is
+score(ht, hs) = h⊤
+t Wahs. (19)
+The global context vector
+ct =
+∑
+s
+at(s)hs (20)
+is combined with the hidden state to produce an attentional hidden
+state, yielding
+˜ht = tanh(Wc[ct ◦ ht]). (21)
+This hidden state is then fed to the two heads of the network,
+composed of two FC layers with an output softmax layer for the
+policy and a linear output layer for the value. The parameters of our
+network are summarized in Table IV.
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 8 ===
+1302 IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023
+TABLE IV
+NEURAL NETWORK PARAMETERS USED IN OUR RL AGENT
+ARCHITECTURE IN FIG. 7.T HE NUMBER OF INPUTS OF THE
+FIRST FC L AYER ISA S FOLLOWS :3 2F ROM GNN, 20 F ROM
+TABLE II,2 4O NE -HOT ENCODING FOR THE ENUM /BOOL TYPES
+FROM TABLE I, AND 3I NTEGER TYPES FROM TABLE I
+F . Our Self-Play Strategy
+Inspired by AlphaZero [ 1], our model learns without supervised
+samples. We do not use expert knowledge to pretrain the network
+using well-known parameter sets or actions. While the agent makes
+random moves at ﬁrst, the idea is that by relying on zero human bias,
+the agent may learn counter-intuitive moves and achieve superhuman
+tuning capabilities.
+G. Multitask Learning
+We adopt a multitask learning framework during training to build
+an agent that can perform well on multiple netlists. We posit that
+each netlist corresponds to a different task to follow this paradigm.
+In principle, different VLSI netlists share the same overall structure
+(≈ directed cyclic graph with small-degree nodes), making multi-
+task learning more efﬁcient and learning all the tasks more quickly
+or proﬁciently than learning them independently. This principle will
+also allow generalization to unseen netlists, whose structures are sim-
+ilar to the trained ones. While there are various multitask learning
+methodologies [25], we use one of the most direct approaches: aggre-
+gate the data across tasks and learn a single model. Thus, our vanilla
+multitask learning objective is
+min
+θ
+T∑
+t=1
+Lt(θ, Dt) (22)
+where each loss Lt is computed with ( 17), and the task t (= netlist
+n) is speciﬁed as an extra set of features in the state deﬁnition
+s = (n, p). Dt corresponds to the data obtained for task t.T h i s
+concatenation-based conditioning is standard but expressive enough
+to dilute the netlist information inside the network. The reward func-
+tion also depends on the task R = R(n), as highlighted by the HPWL
+baseline deﬁned per netlist in ( 11). Finally, we solve the reduced
+single-task learning problem with our parallel A2C: scattering the T
+netlists over the different actors will help optimize the above global
+loss.
+V. E XPERIMENTAL RESULTS
+To train and test our agent, we selected 15 benchmarks designs
+from OpenCores, ISPD 2012 contest, and two RISC-V single cores,
+presented in Table V. We use the ﬁrst 11 designs for training, then the
+following LDPC design is held-out to deﬁne a parameter set selection
+criterion post-training, and ﬁnally, the last three unseen designs are
+used for actual testing. We synthesize the RTL netlists using Synopsys
+Design Compiler. We use TSMC 28-nm technology node. The place-
+ments are done with Cadence Innovus 17 .1. The aspect ratio of the
+ﬂoorplans is ﬁxed to 1, and appropriate ﬁxed clock frequencies are
+TABLE V
+BENCHMARK STATISTICS BASED ON A COMMERCIAL 28- NM
+TECHNOLOGY . RCC I ST H E RICH CLUB COEFFICIENT (e−4),
+LL I ST H E MAXIMUM LOGIC LEVEL , AND SP.R .D ENOTES
+THE SPECTRAL RADIUS .R TI ST H E AVERAGE PLACEMENT
+RUNTIME USING INNOVUS (IN MINUTES )
+selected. Memory macros of RocketTile and OpenPiton Core bench-
+marks are preplaced by hand. A lower bound of total cell area divided
+by ﬂoorplan area is set on parameter max density for successful place-
+ments. IO pins are placed automatically by the tool between metals
+4 and 6.
+A. RL Network Training Setting
+We deﬁne our environment using the OpenAI Gym interface [ 26]
+and implement our RL agent network in Tensorﬂow. We use 16 par-
+allel environments (16 threads) in our synchronous A2C framework.
+We use the smallest netlists during training for the following reason.
+The synchronous nature of A2C demands all individual episodes to
+be completed for all environments before the weight update is pos-
+sible, i.e., an entire batch is collected. As netlists are randomly and
+uniformly assigned when environments are reset, and the training
+spans numerous resets, E[#it. per netlist] is fairly constant across all
+netlists. So, the total makespan, here the training runtime, is equal to
+the makespan of the longest netlist
+E[makespan] = E[#it. per netlist]/bracehtipupleft/bracehtipdownright/bracehtipdownleft/bracehtipupright
+cst.
+× max
+n∈N
+E[R T(n)]. (23)
+This equation motivates the use of smaller netlists whose size corre-
+lates well with the placement runtime, as shown in the last column
+of Table V, to speed up training.
+We perform tuning of the hyperparameters of our network using
+Bayesian optimization, which results in stronger agents. The learn-
+ing curve of our A2C agent in our custom Innovus environment is
+s h o w ni nF i g .8. We observe that the mean reward across all netlists
+converges asymptotically to a value of 6 .8%, meaning wire length is
+reduced on average by 6 .8%.
+Training over 150 updates ( ×6 iterations = 14 400 placements)
+takes about 100 h. Note that 99% of that time is spent on performing
+the placements, while updating the neural network weights takes less
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 9 ===
+AGNESINA et al.: PARAMETER OPTIMIZATION OF VLSI PLACEMENT THROUGH DEEP RL 1303
+Fig. 8. Training our agent for 150 updates ( × 16 × 6 = 14 400 placements).
+The reward is an aggregate of all training netlists’ rewards. Training time is
+within 100 h. Human baseline: reward = 0.
+Fig. 9. Our RL training workﬂow in each environment.
+than 20 min. Without parallelization, training over the same number
+of placements would take 16 × 100 h = 27 days.
+An explained variance of 0 .67 shows that the value function
+explains relatively well the observed returns. We use a discount fac-
+tor γ = 0.997, coefﬁcient for the value loss β = 0.25, entropy
+cost of η = 0.01, and a learning rate of 0 .0008. We use a standard
+noncentered RMSProp as a gradient ascent optimizer. The weights
+are initialized using orthogonal initialization. The learning updates
+are batched across rollouts of 6 actor steps for 16 parallel copies of
+the environment, totaling a mini-batch size of 96. All experiments
+use gradient clipping by norm to avoid exploding gradients (a famil-
+iar phenomenon with LSTMs), with a maximum norm of 0 .5. Note
+that with 14 400 placements, we only explore 10 −6% of the total
+parameter space.
+Fig. 9 depicts the RL training workﬂow in each environment. We
+start by selecting a random netlist and a random parameter set for a
+given environment. Each environment is reset when a stop condition
+is met. Training on K environments in parallel, each performing a
+placement on a different netlist, the reward signal is averaged on the
+K netlists for the network updates, which decreases the reward vari-
+ance and ultimately helps the network generalize to unseen netlists
+as prescribed in [ 27] and the presented multitask methodology.
+More formally, we ﬁrst draw per environment k a random netlist
+uniformly from the set of available training netlists nk ∼ U(N).
+This netlist is ﬁxed until the environment is reset. We also draw a
+random initial parameter setting from all possible parameter settings
+p0,k ∼ U(P). Then, while the stopping criterion is not respected,
+we draw aj,k ∼ πθ(pj−1,k, nk) and pj,k = aj,k(pj−1,k). The pair
+TABLE VI
+COMPARISON OF HALF -PERIMETER BOUNDING BOX (HPWL) A FTER
+PLACEMENT ON TRAINING NETLISTS AMONG HUMAN DESIGN ,
+MAB [ 3], AND OUR RL-B ASED METHOD . HPWL I S REPORTED IN m. /Delta1
+DENOTES PERCENTAGE NEGATIVE IMPROVEMENT OVER HUMAN DESIGN
+(pj,k, nk) is used to perform placement in the EDA tool environment.
+The network agent policy networkπθ is updated with a sliding history
+(rollout) of length J of states {(pj,k, nk)}j∈J,k∈K and corresponding
+rewards {Rj,k}j∈J,k∈K of the k ∈ K environments, totaling a batch
+size of J × K, using the A2C update formulas. Our reset criterion is
+the same for all k environments (calculated independently), so k is
+omitted
+{Rj−4, Rj−3, ..,Rj} < 0‖
+{aj−4, aj−3, ..,aj}= NOTHING‖
+j − jlast reset = 16 (16 steps have passed)
+=⇒ reset pj ∼ U(P). (24)
+B. Netlist Training Results
+For comparison, we use the state-of-the-art tool auto-tuner
+OpenTuner [3] that we adapt for Innovus as a baseline. In this frame-
+work, a MAB selects at each iteration a search technique among GA,
+Differential Evolution, Simulated Annealing, Torczon hillclimber,
+Nelder-Mead, and Particle Swarm Optimization, based on a score that
+forces a tradeoff between exploitation (use arm that worked best) and
+exploration (use a more rarely used arm). We run the search tech-
+niques in parallel, simultaneously evaluating 16 candidate parameter
+sets. It is run on the 11 training netlists, and we record the best-
+achieved wire length, performing 1300 placements per netlist so that
+the total number of placements equals those of the RL agent training.
+Table VI shows the best wire lengths the MAB and the RL agent
+found during training. The human baseline is set by an experienced
+engineer who tunes the parameters for a day. We see that the RL
+agent outperforms MAB on most netlists, reducing HPWL by 9 .8%
+on the Rocket Core benchmark. All in all, both methods improve
+pretty well on the human baseline.
+C. Unseen Netlist Testing Results
+To verify the ability of our agent to generalize, we study its
+performance on the LDPC netlist and the three unseen test netlists.
+Without additional training (the network weights are ﬁxed), the RL
+agent iteratively improves a random initial parameter set by selecting
+action a with the highest probability πθ(a), as described in ( 10)—
+but ignoring the action NOTHING to avoid being stuck in the same
+parameter state. Because our actions are deterministic, the resulting
+parameters are known and directly fed back as input to the network.
+We repeat this process until the estimated value predicted by the
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 10 ===
+1304 IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023
+TABLE VII
+COMPARISON ON LDPC AND THE THREE TEST NETLISTS OF BEST WIRE
+LENGTH FOUND (ONE ITERATION =O NE PLACEMENT PERFORMED ).
+HPWL I S REPORTED IN m
+TABLE VIII
+BEST PLACEMENT PARAMETERS FOUND FOR THE
+NETCARD BENCHMARK
+network decreases for three consecutive updates and backtrack to
+the settings with the highest value—this way, a “good” candidate
+parameter set is found without performing any placement, i.e., with-
+out interacting with the environment. We present the details for the
+criterion choice in the following section. We then perform a unique
+placement with that parameter set and record the obtained wire length.
+In comparison, the MAB needs the reward signal to propose a
+new set of parameters and therefore needs actual placements to be
+performed by the tool. We track the best wire length found, allotting
+50 sequential iterations to the MAB.
+The best wire length found by our RL agent and the MAB on the
+LDPC netlist and all three test netlists is shown in Table VII.O u r
+RL agent achieves superior wire lengths consistently, performing only
+one placement. Finally, Table VIII shows the best parameter settings
+found by the MAB and the RL agent on the Netcard benchmark.
+Interestingly, we can see how the two optimizers found separate ways
+to minimize HPWL: WL-driven versus congestion-driven.
+D. Parameter Selection Criterion and Value Trajectory
+We must deﬁne a criterion to select a suitable parameter set at
+testing time, i.e., decide when to stop the state trajectory of the state
+transition diagram (10) without interacting with the environment. This
+criterion is fundamentally distinct from the training’s stopping crite-
+rion of ( 24), which directly interacts with the training environments
+to reset them by inspecting the actual rewards. Moreover, contrary
+to training where the entropy regularization allows exploration, the
+network actions are deterministic during testing. Therefore, it is not
+evident that the testing criterion can be best deﬁned by simply replac-
+ing the reward with the predicted value in the ﬁrst line of ( 24).
+Indeed, we observed that our trained network did not achieve superior
+performance to the MAB if used in this fashion.
+Therefore, after ﬁrst ﬁxing the pretrained weights of the network,
+we derive a generic selection criterion on a unique held-out
+unseen netlist (LDPC, the smallest test benchmark) by tracking
+Fig. 10. Value function trajectories on the Leon3 benchmark for ﬁve random
+initial parameter sets. Arrows indicate the highest value on a given trajectory.
+TABLE IX
+PPA COMPARISON AFTER ROUTING ON THE SELECTION CRITERION
+DEFINITION (LDPC) AND TEST SETS .T HE TARGET FREQUENCIES ARE
+1G H Z, 500 MH Z, 833 MH Z, AND 666 MH Z FROM TOP TO BOTTOM
+the trajectories of the network’s predicted value and environment
+reward feedback. Empirically, the found criterion yields good HPWL
+improvements on all test netlists despite being derived from LDPC
+only. In Fig. 10, we show the trajectories of the value function
+on benchmark Leon3 for multiple random starting points. The ran-
+domness of the starting parameter set does not notably affect the
+convergence of the value function.
+E. PPA Comparison After Routing
+To conﬁrm the improvement in HPWL after placement is trans-
+lated into one in the ﬁnal routed wire length, we perform the routing
+of the placed designs. They are all routed with the same settings
+where metal layers 1–6 are used. The layouts of OpenPiton Core
+are shown in Fig. 11. We verify the target frequency is achieved
+and routing succeeded without congestion issues or DRC violations.
+The PPA of routed designs is summarized in Table IX. We observe
+that the HPWL reduction after placement is conserved after routing
+on all test designs, reaching 7 .3% and 11% wire length savings on
+LDPC and Netcard compared with the human baseline. Footprints are
+74 283 µm2 for LDPC, 1 199 934 µm2 for OpenPiton, 728 871 µm2
+for Netcard, and 894 115 µm2 for Leon3.
+F . Controlled Feature Selection
+One might wonder if the proposed handcrafted and GNN graph
+features help our RL agent’s superior performance. We resort to
+well-established controlled variable selection methods to offer evi-
+dence of their importance. The RL agent’s strength is closely
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 11 ===
+AGNESINA et al.: PARAMETER OPTIMIZATION OF VLSI PLACEMENT THROUGH DEEP RL 1305
+Fig. 11. 28-nm full-chip GDSII layouts of OpenPiton and Netcard. Top: (a) human design (took 7 h). (b) MAB (took 16 h). (c) RL (took 20 min). Bottom:
+(a) human design (took 8 h). (b) MAB (took 20 h). (c) RL (took 25 min).
+related to its optimal action prediction and value function estima-
+tion. Therefore, we study which explanatory variables serve these
+two agent predictions.
+We thus store the training tuples (st, at, v(st)) to examine the rela-
+tionships between state and corresponding action and value. We only
+keep the samples of iterations ≥ 100, resulting in 4800 tuples, which
+by Fig. 8 correspond to a network of good quality that has converged.
+Let y ∈{ a, v} denote the response of interest, the action, or
+value, respectively, which potentially depends on all state variables
+X1,..., Xp. To discover the importance of variables, we assume an
+(explainable) linear model
+y = X · β + z,w h e r ezi
+i.i.d.∼ N(0,σ 2). (25)
+We have n = 4800 observations, p = 64 features, and β is the
+unknown vector of coefﬁcients and is supposed to be sparse. We
+wish to select a set of features Xj that are likely to be relevant to
+the response y, without too many false positives. The most pertinent
+way to measure the performance of the discovery method is the false
+discovery rate (FDR)
+FDR = E
+[ # false positives
+# of features selected
+]
+= E
+[
+|ˆS ∩ H0|
+max(1, |ˆS|)
+]
+(26)
+where ˆS is the set of selected features and H0 = “null hypothe-
+ses” ={ j ∈ /llbracket1.. p/rrbracket: β⋆
+j = 0},w h e r eβ⋆
+j denotes the “true” value
+of βj from nature. This is the frame of multiple hypothesis testing,
+where rejecting the null hypothesis {βj = 0} indicates Xj is a likely
+explanatory variable.
+We propose two methods for this large-scale hypothesis testing
+problem. Using two methods built on different sets of theoretical
+assumptions will allow us to derive reliable conclusions when they
+agree.
+1) We ﬁrst run the Benjamini–Hochberg procedure (BHq) [ 28]o n
+a linear regression coefﬁcient estimate. The hypotheses are ﬁrst
+ordered and then rejected or accepted based on their p-values
+(= P[|t|≥| tj|| H0]) obtained from a two-sample student’s
+t-test (tj = ˆβj/ sd( ˆβj)).
+2) We also run the Knockoff [ 29] with the Lasso. This method
+manufactures fake variables mimicking the original variables’
+correlation structure. These negative controls allow identifying
+TABLE X
+CONTROLLED FEATURE SELECTION FOR THE VALUE ESTIMATION OF
+OUR TRAINED RL AGENT
+TABLE XI
+CONTROLLED FEATURE SELECTION FOR THE ACTION PREDICTION OF
+OUR TRAINED RL AGENT
+the signiﬁcant predictors while controlling the FDR. The test
+statistic is Wj = max{λj, ˜λj}· sign(λj − ˜λj),w h e r eλj and ˜λj are
+the ﬁrst time the jth variable and its knockoff enter the Lasso
+path, respectively. Then, the variables with Wj over a certain
+threshold computed from the target FDR are selected.
+Both methods return the set of nonzero βj, on which the null
+hypothesis was rejected. We use a traditional target of FDR ≤
+q = 0.1. The features selected by the two testing methodologies
+are presented in Tables X and XI, listed in decreasing order of
+importance.
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 12 ===
+1306 IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023
+The high values of test statistics |t| and W show strong evi-
+dence that the graph features are essential to the RL value network.
+Interestingly, the number of IOs is deemed most important. This is
+not surprising, as combined with the total cell area, it closely relates
+to the famous Rent’s rule, which is empirically seen as a reasonable
+estimate of a circuit wire length [30]. Overall, we observe a good bal-
+ance of GNN and handcrafted graph features in the value prediction.
+In contrast, tool parameters emerge as more critical for the action
+prediction, while a few graph features still appear.
+VI. S TATISTICAL TESTING
+The above experiments show that our RL agent outperforms a
+human designer and the MAB [ 3] on some placement parameter tun-
+ing task instances. However, we recognize that the various sources
+of randomness in these test experiments, such as the starting parame-
+ters and our handcrafted stopping and selection rules, may introduce
+a selection bias to the results. Hence, we present a formal method to
+prove the statistical signiﬁcance of the superiority of our RL agent
+in this section.
+A. Goal
+In most RL works, the strength of an agent is established by a
+win/loss percentage over a human or competing agent. This procedure
+applies to tasks that can be simulated quickly and are suited for
+benchmarking computer players in games, such as Go, Chess, and
+Atari Games. However, the latency associated with EDA tool runs,
+sometimes up to hours or even days, makes theoretical testing of such
+strength metric prohibitive, as many experimental samples need to be
+collected to prove or disprove it with high conﬁdence. In addition,
+the intrinsic randomness of EDA algorithms that rely on heuristics
+heavily is also a challenge in assuring a particular method works well,
+especially when accounting for the diversity of possible netlists.
+For this reason, we turn toward sequential testing, where data
+is collected and evaluated sequentially, and decisions are made as
+soon as guaranteed by a stopping rule with a theoretical basis. This
+approach decreases the cost of additional sampling.
+B. Problem Deﬁnition
+Similar to the testing procedure presented in the previous sec-
+tion, the RL agent and MAB have already been trained. We then
+make them perform against each other where each session follows
+the method of Section V-C. Each session, referred to as a game,h a s
+a binary outcome deﬁned from the ﬂoating-point value of HPWL as
+RL agent wins if HPWL agent < HPWLMAB
+RL agent loses otherwise . (27)
+The games are repeated one after another. We consider their out-
+comes independent as the RL agent starts with a random parameter
+set before each game. The netlist is, on the other hand, ﬁxed.
+This description naturally ﬁts the Bernoulli distribution
+Bernoulli(θ) of the coin-toss random variable by setting
+Xi = 1 if RL agent wins game i,
+Xi = 0 if RLagent loses game i. (28)
+Each game is associated with a random variable Xi encoding the
+result of the game i, leading to i.i.d. random variables X1,..., Xn
+after n games. Moreover, each Xi follows a distribution Bernoulli (θ)
+for θ ∈ [0, 1], where θ corresponds to our RL agent’s probability of
+winning a game, namely, P[Xi = 1].
+We wish to discover meaningful information on θ, where a value
+above 0.5 corresponds to the superiority of our agent. However, the
+exact value of θ is only available asymptotically, i.e., as a win/loss
+percentage of an inﬁnite amount of games.
+Traditional methods offer approximations of θ that are accurate for
+large sample sizes only. Namely, consider the maximum-likelihood
+estimator (MLE) of θ, of the form
+ˆθn = 1
+n
+n∑
+i=1
+Xi. (29)
+A conﬁdence interval is introduced to include uncertainty in this
+estimation, where we know that θ is in the interval with a proba-
+bility larger than a certain percentage. Only nonasymptotic coverage
+methods, where the coverage properties hold for any value of the
+number of games played, are acceptable in our case, as asymptotic
+methods would rely on a prohibitive number of games. A standard
+tight conﬁdence interval at level 1 − α of the Bernoulli model is
+[ˆθn ±
+√
+log(2/α)/(2n)], which means the inequality
+P
+[
+ˆθn −
+√
+log(2/α)
+2n ≤ θ ≤ ˆθn +
+√
+log(2/α)
+2n
+]
+≥ 1 − α (30)
+is satisﬁed. Per this formula, if we were to play 50 games and desire
+a 99% ( α = 1%) conﬁdence in the value of our estimation, the
+uncertainty would be ±0.23, which can be substantial depending on
+the value of ˆθn.
+Thus, rather than using the estimation presented above, we propose
+a statistical experiment with data X and model {Bernoulli(θ) : θ ∈
+[0, 1]}. We want to decide between the composite null hypothesis
+{H0 : θ ≤ θ0} against the composite alternative {H1 : θ ≥ θ1} where
+θ1 >θ 0. We decide that H0 means that our RL agent is not better,
+while H1 means that our agent is indeed better. The values of θ0 and
+θ1 can be chosen to ﬁt the deﬁnition of superiority.
+When testing hypotheses, two types of errors are considered,
+namely, Type-I error and Type-II error, deﬁned as
+α = Pθ [ reject H0]w h e n θ ≤ θ0,
+β = Pθ [ reject H1]w h e n θ ≥ θ1. (31)
+In our problem, the Type I error corresponds to the probability of
+our RL agent falsely being evaluated as better. The Type II error
+corresponds to the probability of falsely evaluating the agent as infe-
+rior. Ideally, we want the Type I and Type II errors to be minor.
+In practice, H0 and H1 must be chosen to make the corresponding
+Type I error more severe than Type II. This fact motivated our choice
+of H0: we stay conservative and emphasize avoiding evaluating our
+agent incorrectly as better.
+C. Sequential Answer
+Wald [31] proposed a general procedure called the SPRT that can
+test our two competing hypotheses with a small number of samples.
+The procedure evaluates the likelihood ratio between the hypothe-
+ses and stops acquiring observations when this ratio crosses some
+boundary.
+After each game, Wald’s SPRT methodology computes the likeli-
+hood ratio Ln of the currently n played games, i.i.d. observations
+X1,..., Xn having common density function P ∈{ P0, P1},t h e
+competing hypotheses
+Ln =
+n∏
+i=1
+P1(Xi)/P0(Xi). (32)
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 13 ===
+AGNESINA et al.: PARAMETER OPTIMIZATION OF VLSI PLACEMENT THROUGH DEEP RL 1307
+The SPRT stops sampling at stage
+N = inf{n ≥ 1: Ln ⁄∈ (A, B)} (33)
+where 0 < A < 1 < B are stopping boundaries, rejecting {H0 : P =
+P0}, and accepting {H1 : P = P1} if Ln ≥ B. Until the stopping
+boundaries are not crossed, we must play more games. The choice
+of A and B is dictated by the Type I and Type II error probabilities
+α and β, respectively. Wald has shown that α and β are related to A
+and B by the inequalities
+α ≤ A−1(1 − β), β ≤ B(1 − α) (34)
+which provides approximate determinations (nominal error rates) of
+A and B in terms of the error probabilities.
+The SPRT has minimal stopping time Eθ [T]a t θ = θ0 or θ1,w h e r e
+T denotes the sample size, but its Eθ [T] for different θ may not be
+optimal [32]. Its correctness, however, stands, and to test {H0 : θ ≤
+θ0} against {H1 : θ ≥ θ1} with Type I and Type II error probabilities
+not exceeding α and β, one can use the SPRT of {J : θ = θ0} versus
+{K : θ = θ1} with Type I and Type II error probabilities α and β.
+D. SPRT in Our Problem
+For simplicity, we present the SPRT stopping conditions by con-
+sidering ﬁrst the exponential family of distributions, G ={ gη(x) =
+eηx−ψ(η) g0(x), η ∈ A, x ∈ X},w h e r eA and X are subsets of
+the real line R1. η is the canonical parameter, and x is the natural
+statistic; in many cases, the observed data point. For the exponential
+family, it is straightforward to show that Ln ∈ (A, B) is equivalent to
+log(A) + n(ψ(η1) − ψ(η0))
+η1 − η0
+≤
+n∑
+i=1
+xi
+≤ log(B) + n(ψ(η1) − ψ(η0))
+η1 − η0
+. (35)
+The Bernoulli family, where Pθ [X = x] = θx(1 − θ)1−x, can be
+written in exponential form with the correspondences
+⎧
+⎪⎨
+⎪⎩
+η = log( θ
+1−θ )( θ = 1
+1+e−η )
+ψ(η) =− log(1 − θ) ( = log(1 + eη))
+g0(x) = 1
+(36)
+yielding for our two hypotheses H0 against H1
+η1 − η0 = log
+( θ1(1 − θ0)
+θ0(1 − θ1)
+)
+ψ(η1) − ψ(η0) = log
+( 1 − θ0
+1 − θ1
+)
+(37)
+which can be directly used in (35), along with n as the current number
+of games played and∑n
+i=1 xi as the number of wins accumulated by
+our RL agent during these n games.
+E. Experiments
+1) Conditions: We calculate the stopping boundaries A and B for
+a small error rate target of α = β = 1% using (34) to provide a very
+accurate decision. Moreover, to be conservative, we pose {H0 : θ ≤
+θ0 = 0.5} and {H1 : θ ≥ θ1 = 0.8}. Setting θ1 as high permits a
+“higher superiority” level tolerance if our agent is found better by
+the statistical procedure.
+Fig. 12. SPRT [ 31] of the opposition of MAB [ 3] versus our trained RL
+agent. The latter is “superior” to the MAB on all four LDPC and unseen test
+netlists.
+2) Results: We plot in Fig. 12 the results of the games of our
+RL agent against the MAB for the LDPC and the three test netlists.
+The red lines correspond to the bounds of ( 35). For all netlists, the
+SPRT leads to the acceptance of the hypothesis H1, indicating the
+superiority of our RL agent at the parameter tuning task. Noticeably,
+the RL agent is considerably stronger on the Leon3 and OpenPiton
+benchmarks, as it is declared better much faster than in the LDPC
+and Netcard cases.
+On the other hand, consider the MLE and its associated nonasymp-
+totic coverage in ( 30). The stopping times of the SPRT procedure in
+Fig. 12 would yield the realization of the MLE conﬁdence intervals
+at level 99% as [0 .47, 1] for OpenPiton ( n = 16), [0 .49, 1] for
+Netcard ( n = 34), [0 .48, 1] for LDPC ( n = 28), and [0 .51, 1] for
+Leon3 ( n = 11). Except for Leon3, these intervals intersect with
+[0,θ 0 = 0.5], allowing for H0 to be true—which is rather quickly
+disproved by the SPRT. Regardless, in all cases, they are never con-
+tained in [ θ1 = 0.8, 1] and thus can never prove H1. Therefore, the
+proposed sequential approach is superior in offering an adequate test-
+ing methodology of the placement task’s performance with a smaller
+sample size.
+VII. C ONCLUSION
+Our placement parameter optimizer based on deep RL provides
+a preset of improved parameter settings without human intervention.
+This is crucial to shift from the CAD expert-user mindset to a Design
+Automation mindset. We use a novel representation to formulate
+states and actions applied to placement optimization. Our experi-
+mental results show that our agent generalizes well to unseen netlists
+and consistently reduces wire length compared with a state-of-the-
+art tool auto-tuner in only one iteration without additional training.
+Furthermore, we demonstrate the superiority of our agent using an
+SPRT.
+REFERENCES
+[1] D. Silver et al., “Mastering chess and Shogi by self-play with a general
+reinforcement learning algorithm,” 2017, arXiv:1712.01815.
+[2] I. L. Markov, J. Hu, and M.-C. Kim, “Progress and challenges in VLSI
+placement research,” Proc. IEEE, vol. 103, no. 11, pp. 1985–2003, Nov.
+2015.
+[3] J. Ansel et al., “OpenTuner: An extensible framework for program auto-
+tuning,” in Proc. 23rd Int. Conf. Parallel Archit. Compilation (PACT) ,
+2014, pp. 303–315.
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 
+=== PAGE 14 ===
+1308 IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 42, NO. 4, APRIL 2023
+[4] E. Ustun, S. Xiang, J. Gui, C. Yu, and Z. Zhang, “LAMDA: Learning-
+assisted multi-stage autotuning for FPGA design closure,” in Proc. IEEE
+27th Annu. Int. Symp. Field-Programmable Custom Comput. Mach.
+(FCCM), 2019, pp. 74–77.
+[5] B. Shahriari, K. Swersky, Z. Wang, R. P. Adams, and N. De Freitas,
+“Taking the human out of the loop: A review of Bayesian optimization,”
+Proc. IEEE, vol. 104, no. 1, pp. 148–175, Jan. 2016.
+[6] M. M. Ziegler, H.-Y . Liu, G. Gristede, B. Owens, R. Nigaglioni, and
+L. P. Carloni, “A synthesis-parameter tuning system for autonomous
+design-space exploration,” in Proc. Design Autom. Test Europe Conf.
+Exhibit. (DATE), 2016, pp. 1148–1151.
+[7] N. Kapre, B. Chandrashekaran, H. Ng, and K. Teo, “Driving timing
+convergence of FPGA designs through machine learning and cloud
+computing,” in Proc. IEEE 23rd Annu. Int. Symp. Field-Programmable
+Custom Comput. Mach. , 2015, pp. 119–126.
+[8] Z. Xie et al. , “FIST: A feature-importance sampling and tree-based
+method for automatic design ﬂow parameter tuning,” in Proc. 25th Asia
+South Paciﬁc Design Autom. Conf. (ASP-DAC) , 2020, pp. 19–25.
+[9] J. Kwon, M. M. Ziegler, and L. P. Carloni, “A learning-based rec-
+ommender system for autotuning design ﬂows of industrial high-
+performance processors,” in Proc. 56th Annu. Design Autom. Conf. ,
+2019, pp. 1–6.
+[10] T. Chen et al., “Learning to optimize: A primer and a benchmark,” 2021,
+arXiv:2103.12828.
+[11] Y .-W. Chang, “Circuit placement challenges: Technical perspective,”
+Commun. ACM, vol. 56, no. 6, p. 104, 2013.
+[12] A. B. Kahng, “Advancing placement,” in Proc. Int. Symp. Phys. Design ,
+2021, pp. 15–22.
+[13] R. E. Tarjan, “Depth-ﬁrst search and linear graph algorithms,” SIAM J.
+Comput., vol. 1, no. 2, pp. 146–160, 1972.
+[14] C. Bron and J. Kerbosch, “Algorithm 457: Finding all cliques of an
+undirected graph,” Commun. ACM, vol. 16, no. 9, pp. 575–577, 1973.
+[15] O. Coudert, “Exact coloring of real-life graphs is easy,” in Proc. 34th
+Design Autom. Conf. , 1997, pp. 1–6.
+[16] V . Colizza, A. Flammini, M. A. Serrano, and A. Vespignani, “Detecting
+rich-club ordering in complex networks,”Nat. Phys., vol. 2, pp. 110–115,
+Jan. 2006.
+[17] D. J. Watts and S. H. Strogatz, “Collective dynamics of ‘small-world’
+networks,” Nature, vol. 393, pp. 440–442, Jun. 1998.
+[18] R. B. Lehoucq and D. C. Sorensen, “Deﬂation techniques for an implic-
+itly restarted Arnoldi iteration,” SIAM J. Matrix Anal. Appl. , vol. 17,
+no. 4, pp. 789–821, 1996.
+[19] W. Hamilton, Z. Ying, and J. Leskovec, “Inductive representation learn-
+ing on large graphs,” in Advances in Neural Information Processing
+Systems, I. Guyon et al. , Eds. Red Hook, NY , USA: Curran Assoc.,
+Inc., 2017.
+[20] L. van der Maaten and G. Hinton, “Visualizing data using t-SNE,” J.
+Mach. Learn. Res. , vol. 9, no. 86, pp. 2579–2605, 2008.
+[21] V . Mnih et al., “Asynchronous methods for deep reinforcement learning,”
+in Proc. 33rd Int. Conf. Mach. Learn. , 2016, pp. 1928–1937.
+[22] L. Espeholt et al., “IMPALA: Scalable distributed deep-RL with impor-
+tance weighted actor-learner architectures,” in Proc. 35th Int. Conf.
+Mach. Learn., 2018, pp. 1407–1416.
+[23] O. Vinyals et al. , “StarCraft II: A new challenge for reinforcement
+learning,” 2017, arXiv:1708.04782.
+[24] M. Luong, H. Pham, and C. D. Manning, “Effective approaches to
+attention-based neural machine translation,” 2015, arXiv:1508.04025.
+[25] Y . Zhang and Q. Yang, “A survey on multi-task learning,”
+IEEE Trans. Knowl. Data Eng. , early access, Mar. 31, 2021,
+doi: 10.1109/TKDE.2021.3070203.
+[26] G. Brockman et al., “OpenAI gym,” 2016, arXiv:1606.01540.
+[27] A. Mirhoseini et al., “Chip placement with deep reinforcement learning,”
+2020, arXiv:2004.10746.
+[28] Y . Benjamini and Y . Hochberg, “Controlling the false discovery rate: A
+practical and powerful approach to multiple testing,” J. Royal stat. Soc.
+B, Methodol., vol. 57, no. 1, pp. 289–300, 1995.
+[29] R. F. Barber and E. J. Candès, “Controlling the false discovery rate via
+knockoffs,” Ann. Stat., vol. 43, no. 5, pp. 2055–2085, Oct. 2015.
+[30] W. Donath, “Placement and average interconnection lengths of computer
+logic,”IEEE Trans. Circuits Syst., vol. 26, no. 4, pp. 272–277, Apr. 1979.
+[31] A. Wald, “Sequential tests of statistical hypotheses,” Ann. Math. Stat. ,
+vol. 16, no. 2, pp. 117–186, 1945.
+[32] T. L. Lai, “Likelihood ratio identities and their applications to sequential
+analysis,” Sequential Anal., vol. 23, no. 4, pp. 467–497, 2004.
+Anthony Agnesina received the Diplôme
+d’Ingénieur degree from CentraleSupélec, Gif-sur-
+Yvette, France, in 2016, and the M.S. and Ph.D.
+degrees in electrical and computer engineering from
+Georgia Tech, Atlanta, GA, USA, in 2017 and
+2022, respectively.
+He joined NVIDIA Research, Austin, TX,
+USA, in 2022. His research interests include 3-D
+integrated circuits, applied machine learning to
+EDA, and algorithms for computer-aided design of
+VLSI circuits.
+Kyungwook Chang (Member, IEEE) received the
+B.S. and M.S. degrees in electrical and computer
+engineering from Seoul National University, Seoul,
+South Korea, in 2007 and 2010, respectively, and
+the Ph.D. degree from the School of Electrical
+and Computer Engineering, Georgia Institute of
+Technology, Atlanta, GA, USA, in 2019.
+He joined the College of Information and
+Communication Engineering, Sungkyunkwan
+University, Suwon, South Korea, in 2021, where
+he serves as an Assistant Professor. His current
+research interests include computer-aided design solutions for 3-D ICs,
+design-technology co-optimization, physical/logic design and analysis, power
+delivery network, and parallel computing/memory architecture.
+Sung Kyu Lim (Senior Member, IEEE) received the
+B.S., M.S., and Ph.D. degrees from the Computer
+Science Department, University of California at Los
+Angeles, Los Angeles, CA, USA, in 1994, 1997, and
+2000, respectively.
+In 2001, he joined the School of Electrical
+and Computer Engineering, Georgia Institute of
+Technology, Atlanta, GA, USA, where he is
+a Motorola Solutions Foundation Professor. His
+research is featured as Research Highlight in the
+Communication of the ACM in January 2014. He
+is the author of Practical Problems in VLSI Physical Design Automation
+(Springer, 2008). He has published more than 400 papers on 2.5-D and 3-D
+ICs. His research focus is on the architecture, design, test, and electronic
+design automation solutions for 2.5-D and 3-D ICs.
+Dr. Lim received the National Science Foundation Faculty Early Career
+Development (CAREER) Award in 2006. He received the ACM SIGDA
+Distinguished Service Award in 2008. He received the Best Paper Award from
+the IEEE T RANSACTIONS ON ELECTROMAGNETIC COMPATIBILITY and
+the IEEE T RANSACTIONS ON COMPUTER -AIDED DESIGN OF INTEGRATED
+CIRCUITS AND SYSTEMS in 2022. He was an Associate Editor of the IEEE
+TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) S YSTEMS
+from 2007 to 2009 and the IEEE T RANSACTIONS ON COMPUTER -AIDED
+DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS from 2013 to 2018.
+Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore.  Restrictions apply. 

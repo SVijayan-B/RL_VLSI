@@ -1,0 +1,7 @@
+parameter,benchmark,value_low,value_baseline,value_high,hpwl_low,hpwl_baseline,hpwl_high,delta_low_pct,delta_high_pct,runtime_low,runtime_baseline,runtime_high,hpwl_effect_detected,runtime_effect_detected,effect_direction,nonlinear,redundant,valid
+max_displacement,BENCH_01_RISCY_C2_U70,0,0,60,731162.9,731162.9,731162.9,0.0,0.0,4.427,4.427,3.998,False,True,NEUTRAL,False,False,True
+site_search_window,BENCH_01_RISCY_C2_U70,0,0,60,731162.9,731162.9,731162.9,0.0,0.0,4.427,4.427,3.761,False,True,NEUTRAL,False,False,True
+row_search_window,BENCH_01_RISCY_C2_U70,0,0,12,731162.9,731162.9,731152.0,0.0,-0.0015,4.427,4.427,4.007,True,True,IMPROVEMENT,True,False,True
+disallow_one_site_gaps,BENCH_01_RISCY_C2_U70,False,False,True,731162.9,731162.9,731162.9,0.0,0.0,4.427,4.427,3.913,False,True,NEUTRAL,False,False,True
+use_diamond_legalizer,BENCH_01_RISCY_C2_U70,False,False,True,731162.9,731162.9,731102.3,0.0,-0.0083,4.427,4.427,3.591,True,True,IMPROVEMENT,False,False,True
+disable_window_extension,BENCH_01_RISCY_C2_U70,False,False,True,731162.9,731162.9,731149.4,0.0,-0.0018,4.427,4.427,3.743,True,True,IMPROVEMENT,False,False,True

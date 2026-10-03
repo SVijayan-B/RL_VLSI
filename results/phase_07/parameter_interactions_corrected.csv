@@ -1,0 +1,10 @@
+benchmark,param_a,value_a,param_b,value_b,hpwl_um,hpwl_delta_pct,runtime_sec,observed_delta_hpwl_um,expected_additive_hpwl_delta_um,hpwl_interaction_um,hpwl_interaction_detected,runtime_interaction_detected,observed_delta_runtime_sec,expected_additive_runtime_delta_sec,runtime_interaction_sec
+BENCH_01_RISCY_C2_U70,max_displacement,0,site_search_window,0,731162.9,0.0,4.427,0.0,0.0,0.0,False,False,0.0,0.0,0.0
+BENCH_01_RISCY_C2_U70,max_displacement,0,site_search_window,20,731162.9,0.0,3.968,0.0,0.0,0.0,False,False,-0.459,-0.459,0.0
+BENCH_01_RISCY_C2_U70,max_displacement,0,site_search_window,50,731162.9,0.0,4.091,0.0,0.0,0.0,False,False,-0.336,-0.336,0.0
+BENCH_01_RISCY_C2_U70,max_displacement,20,site_search_window,0,731162.9,0.0,4.009,0.0,0.0,0.0,False,False,-0.418,-0.418,0.0
+BENCH_01_RISCY_C2_U70,max_displacement,20,site_search_window,20,731162.9,0.0,3.871,0.0,0.0,0.0,False,False,-0.556,-0.877,0.321
+BENCH_01_RISCY_C2_U70,max_displacement,20,site_search_window,50,731162.9,0.0,5.829,0.0,0.0,0.0,False,True,1.402,-0.754,2.156
+BENCH_01_RISCY_C2_U70,max_displacement,50,site_search_window,0,731162.9,0.0,3.95,0.0,0.0,0.0,False,False,-0.477,-0.477,0.0
+BENCH_01_RISCY_C2_U70,max_displacement,50,site_search_window,20,731162.9,0.0,3.97,0.0,0.0,0.0,False,False,-0.457,-0.936,0.479
+BENCH_01_RISCY_C2_U70,max_displacement,50,site_search_window,50,731162.9,0.0,3.929,0.0,0.0,0.0,False,False,-0.498,-0.813,0.315

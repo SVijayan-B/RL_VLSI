@@ -1,0 +1,44 @@
+{
+  "phase": 7,
+  "title": "Placement Parameter Sweep & Space Formulation",
+  "status": "FINALIZED",
+  "phase7a_status": "COMPLETE",
+  "phase7b_status": "COMPLETE",
+  "timestamp": "2026-10-03T10:20:00Z",
+  "reference_paper": "Agnesina et al., IEEE TCAD 2023",
+  "framework": "CircuitNet N28 + OpenROAD (Open-source adaptation)",
+  "primary_objective": "HPWL (Half-Perimeter Wirelength)",
+  "secondary_objectives": [
+    "Runtime",
+    "Legality",
+    "Delay Proxy",
+    "Power Proxy",
+    "IR Drop Proxy"
+  ],
+  "paper_parameters": 12,
+  "paper_actions": 11,
+  "openroad_controllable_parameters": 6,
+  "baseline_placement": {
+    "max_displacement": 0,
+    "site_search_window": 0,
+    "row_search_window": 0,
+    "disallow_one_site_gaps": false,
+    "use_diamond_legalizer": false,
+    "disable_window_extension": false
+  },
+  "benchmarks": 4,
+  "benchmarks_evaluated": [
+    "BENCH_01_RISCY_C2_U70",
+    "BENCH_02_RISCY_C2_U90",
+    "BENCH_03_RISCY_C5_U70",
+    "BENCH_04_RISCY_C20_U70"
+  ],
+  "original_sweep_runs": 38,
+  "runtime_repeat_configurations": 6,
+  "runtime_repeat_count": 3,
+  "baseline_hpwl_um": 731162.9,
+  "baseline_reproducibility": "PASS",
+  "unit_tests_status": "12/12 PASSED (100%)",
+  "audit_tests_status": "8/8 PASSED (100%)",
+  "validation_suite_status": "PASSED (100% OK)"
+}

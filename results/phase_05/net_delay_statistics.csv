@@ -1,0 +1,5 @@
+benchmark_id,design,num_nets,mean_delay_ps,std_delay_ps,p50_delay_ps,p75_delay_ps,p90_delay_ps,p95_delay_ps,p99_delay_ps,max_delay_ps,mean_criticality,max_criticality
+BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,55401,6.04,23.91,2.93,5.36,10.41,17.41,58.58,3654.78,0.0017,1.0
+BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,55265,5.8,23.18,2.86,5.2,9.52,16.08,58.34,3573.01,0.0016,1.0
+BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,53302,6.2,24.55,2.92,5.44,10.3,17.82,63.74,3678.19,0.0017,1.0
+BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,53246,6.21,24.61,2.91,5.45,10.26,18.03,62.8,3713.12,0.0017,1.0

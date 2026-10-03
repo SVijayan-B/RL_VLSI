@@ -1,0 +1,12 @@
+{
+  "benchmark_id": "BENCH_04_RISCY_C20_U70",
+  "def_path": "/workspace/dataset/processed/DEF_decompressed/DEF/493-RISCY-a-1-c20-u0.7-m1-p1-f0.def",
+  "seed": 42,
+  "num_cells": 49931,
+  "num_nets": 53248,
+  "num_pins": 563,
+  "core_width_um": 582.54,
+  "core_height_um": 581.85,
+  "detailed_placement_status": "SUCCESS",
+  "runtime_sec": 5.683
+}

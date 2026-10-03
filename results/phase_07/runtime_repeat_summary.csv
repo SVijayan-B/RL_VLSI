@@ -1,0 +1,7 @@
+benchmark,parameter,value,repeat_count,legalized_hpwl_um,hpwl_std_um,mean_runtime_sec,median_runtime_sec,sample_std_runtime_sec,min_runtime_sec,max_runtime_sec
+BENCH_01_RISCY_C2_U70,baseline,default,3,731162.9,0.0,4.2,3.971,0.638,3.708,4.92
+BENCH_01_RISCY_C2_U70,use_diamond_legalizer,True,3,731102.3,0.0,2.49,2.45,0.229,2.283,2.736
+BENCH_02_RISCY_C2_U90,baseline,default,3,708651.3,0.0,61.084,61.778,2.139,58.684,62.789
+BENCH_02_RISCY_C2_U90,use_diamond_legalizer,True,3,644211.4,0.0,2.653,2.63,0.154,2.511,2.817
+BENCH_02_RISCY_C2_U90,site_search_window,60,3,724420.8,0.0,83.082,82.964,0.345,82.811,83.47
+BENCH_02_RISCY_C2_U90,row_search_window,12,3,724039.9,0.0,58.932,59.267,0.695,58.133,59.396

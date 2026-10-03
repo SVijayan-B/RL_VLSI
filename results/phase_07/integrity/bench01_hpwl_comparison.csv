@@ -1,0 +1,2 @@
+benchmark,def_path,phase4_hpwl,phase7_hpwl,difference_um,difference_pct,phase4_net_count,phase7_net_count,phase4_pin_count,phase7_pin_count,phase4_cell_count,phase7_cell_count,same_units,same_def,same_placement_state
+BENCH_01_RISCY_C2_U70,dataset/processed/DEF_decompressed/DEF/1-RISCY-a-1-c2-u0.7-m1-p1-f0.def,731162.90,731824.32,661.42,0.0905,55401,55401,563,563,52147,52147,True,True,True

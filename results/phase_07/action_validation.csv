@@ -1,0 +1,12 @@
+action_id,paper_action_name,openroad_action_status,affected_parameters,transition_verified,legality_verified,notes
+1,FLIP Booleans,VERIFIED,"disallow_one_site_gaps, use_diamond_legalizer, disable_window_extension",True,True,"Toggles all 3 controllable OpenROAD boolean flags; placement remains legal"
+2,UP Integers,VERIFIED,"max_displacement, site_search_window, row_search_window",True,True,"Increases integer search parameters by bounded step (+10, +10, +2); fully validated"
+3,DOWN Integers,VERIFIED,"max_displacement, site_search_window, row_search_window",True,True,"Decreases integer search parameters by bounded step (-10, -10, -2); bounded at zero"
+4,UP Efforts,PARTIALLY_VERIFIED,"row_search_window, site_search_window",True,True,"Adapted to OpenROAD DPL search windows (effort analog); paper timing/power effort unavailable"
+5,DOWN Efforts,PARTIALLY_VERIFIED,"row_search_window, site_search_window",True,True,"Adapted to OpenROAD DPL search windows (effort analog); paper timing/power effort unavailable"
+6,UP Detailed,VERIFIED,"max_displacement, site_search_window",True,True,"Increases detailed displacement and horizontal search window; fully operational in DPL"
+7,DOWN Detailed,VERIFIED,"max_displacement, site_search_window",True,True,"Decreases detailed displacement and horizontal search window; fully operational in DPL"
+8,UP Global,UNAVAILABLE,none,N/A,N/A,"Innovus global parameter group (max density, blockage, timing/clock power effort) unavailable in CircuitNet N28 + OpenROAD DPL flow"
+9,DOWN Global,UNAVAILABLE,none,N/A,N/A,"Innovus global parameter group (max density, blockage, timing/clock power effort) unavailable in CircuitNet N28 + OpenROAD DPL flow"
+10,INVERT-MIX,UNAVAILABLE,none,N/A,N/A,"Semantic trade-off between timing effort, congestion effort, and wire length optimization unavailable without .lib/global placer"
+11,DO NOTHING,VERIFIED,none,True,True,"Leaves parameter state invariant; 5 consecutive executions trigger environment reset per Equation (24)"

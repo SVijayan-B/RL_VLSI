@@ -1,0 +1,65 @@
+{
+  "description": "Validated OpenROAD parameter space for placement optimization in CircuitNet N28",
+  "version": "1.0.0",
+  "controllable_parameters": {
+    "max_displacement": {
+      "type": "integer",
+      "focus": "Detailed",
+      "min": 0,
+      "max": 100,
+      "delta": 0.1,
+      "step": 10,
+      "default": 0,
+      "openroad_flag": "-max_displacement"
+    },
+    "site_search_window": {
+      "type": "integer",
+      "focus": "Detailed",
+      "min": 0,
+      "max": 100,
+      "delta": 0.1,
+      "step": 10,
+      "default": 0,
+      "openroad_flag": "-site_search_window"
+    },
+    "row_search_window": {
+      "type": "integer",
+      "focus": "Effort",
+      "min": 0,
+      "max": 20,
+      "delta": 0.1,
+      "step": 2,
+      "default": 0,
+      "openroad_flag": "-row_search_window"
+    },
+    "disallow_one_site_gaps": {
+      "type": "boolean",
+      "focus": "Detailed",
+      "default": false,
+      "openroad_flag": "-disallow_one_site_gaps"
+    },
+    "use_diamond_legalizer": {
+      "type": "boolean",
+      "focus": "Detailed",
+      "default": false,
+      "openroad_flag": "-use_diamond_legalizer"
+    },
+    "disable_window_extension": {
+      "type": "boolean",
+      "focus": "Detailed",
+      "default": false,
+      "openroad_flag": "-disable_window_extension"
+    }
+  },
+  "unavailable_parameters": [
+    "density",
+    "bin_grid_count",
+    "overflow",
+    "timing_driven",
+    "routability_driven",
+    "activity_power_driven",
+    "clock_power_driven",
+    "clock_gate_aware",
+    "blockage_channel"
+  ]
+}

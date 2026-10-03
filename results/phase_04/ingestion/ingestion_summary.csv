@@ -1,0 +1,5 @@
+benchmark_id,design,def_file,normal_ingest_status,normal_ingest_error,continue_ingest_status,retained_instances,retained_nets,retained_terminals,via_policy_applied
+BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,1-RISCY-a-1-c2-u0.7-m1-p1-f0.def,FAILED,[WARNING ODB-0177] error: undefined via (VIA12_square) referenced,PASSED,52147,55403,563,continue_on_errors (no via fabrication)
+BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,120-RISCY-a-1-c2-u0.9-m1-p1-f0.def,FAILED,[WARNING ODB-0177] error: undefined via (VIA12_square) referenced,PASSED,52005,55267,563,continue_on_errors (no via fabrication)
+BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,248-RISCY-a-1-c5-u0.7-m1-p1-f0.def,FAILED,[WARNING ODB-0177] error: undefined via (VIA12_square) referenced,PASSED,49987,53304,563,continue_on_errors (no via fabrication)
+BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,493-RISCY-a-1-c20-u0.7-m1-p1-f0.def,FAILED,[WARNING ODB-0177] error: undefined via (VIA12_square) referenced,PASSED,49931,53248,563,continue_on_errors (no via fabrication)

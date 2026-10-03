@@ -1,0 +1,190 @@
+=== Page 4 has 441 words ===
+[  30] 1298 IEEETRANSACTIONSONCOMPUTER-AIDEDDESIGNOFINTEGRATEDCIRCUITSANDSYSTEMS,VOL.42,NO.4,APRIL2023
+[  51] TABLEI
+[  60] 12TARGETEDPLACEMENTPARAMETERS.THESOLUTIONSPACEIS1013·36·23=6x109
+[ 234] TABLEII
+[ 240] theminlineartimeusingdirected adepth-firstsearchwithan
+[ 243] OUR20HANDCRAFTEDNETLISTFEATURES
+[ 249] algorithm due to Tarjan [13].
+[ 261] 2) Clique:Givenanintegerm,doesGcontainsKm (thecomplete
+[ 273] graphonmvertices)asasubgraph?WeusetheBron–Kerbosch
+[ 285] algorithm [14] to find the maximal cliques.
+[ 297] 3) k-Colorability:Givenanintegerk,isthereacoloringofGwith
+[ 306] korfewercolors?Acoloringisamapχ:V →Csuchastwo
+[ 318] (u,v)∈E, adjacent vertices have the same color; i.e., if then
+[ 330] χ(u)(cid:12)=χ(v).Minimumk(thechromaticnumber)iscomputed
+[ 342] using a technique proposed in [15].
+[ 354] 4) Logic Levels: What is the maximum distance (# gates tra-
+[ 366] versed) between two flip-flops?
+[ 363] LL=maxa,b∈FFsd(a,b).
+[ 375] 5) Rich Club Coefficient: How well do high-degree (rich) nodes
+[ 387] = (Vk ,Ek ) know each other? Let Gk be the filtered graph
+[ 396] > =
+[ 399] of G with only nodes of degree k, then RCCk
+[ 408] ([2|Ek |]/[|Vk |(|Vk |−1)])
+[ 411] [16].
+[ 423] 6) ClusteringCoefficient:Ameasureofthecliquishnessofnodes
+[ 435] neighborhoods [17] of the form
+[ 456] (cid:4)|ejk
+[ 459] ,vk ∈Neighbors(i),ejk ∈E| 1 : vj
+[ 465] CC= .
+[ 468] (7)
+[ 471] |V| deg(i)(deg(i)−1)
+[ 477] Fig.2. Ournetlisttographtransformation. i∈V
+[ 504] 7) SpectralCharacteristics:UsingtheimplicitlyrestartedArnoldi
+[ 513] method [18], we extract from the Laplacian matrix of G the
+[ 519] fromsourcetosinks.Thedirectednatureofthegraphisnecessaryfor
+[ 525] Fiedler value (second smallest eigenvalue) deeply related to
+[ 531] the correct definition of graph characteristics proposed, such as the
+[ 537] theconnectivitypropertiesofG,aswellasthespectralradius
+[ 543] logic levels. However, this representation is switched to undirected
+[ 549] (largest eigenvalue) relative to the regularity of G.
+[ 555] when needed by other graph algorithms.
+[ 561] Thesefeaturesgivecrucialinformationaboutthenetlist.Forexam-
+[ 567] We propose two ways to extract meaningful features from this
+[ 573] ple, connectivity features, such as SCC, maximal clique, and RCC,
+[ 579] graph representation.
+[ 582] are essential to capture congestion considerations (considered dur-
+[ 591] 1) Topological Graph Features: We borrow concepts from graph
+[ 594] ing placement refinement), while logic levels indirectly translate the
+[ 603] theorytolearnrichgraphrepresentationsthatuniquelyclassifyeach
+[ 606] difficulty of meeting timing by extracting the longest logic path.
+[ 615] graph. We use Boost and BLAS optimized
+[ 612] C++
+[ 615] libraries to extract
+[ 618] 2) Features From Graph Neural Network: Starting from sim-
+[ 624] our features efficiently on large graphs—collected in less than 1 h
+[ 630] ple node features, including degree, fanout, area, and encoded gate
+[ 636] for the larger netlists. Let G = (V,E) be the directed cyclic graph
+[ 642] type, we generate node embeddings (ENC
+[ 639] (v))
+[ 642] using unsupervised
+[ 648] representing the netlist obtained using the above model. Global sig-
+[ 654] GraphSAGE [19] with convolutional aggregation, dropout, and out-
+[ 660] nals, such as reset, clock, or VDD/VSS, are not considered when
+[ 666] putsizeof32.TheGNNalgorithmiterativelypropagatesinformation
+[ 672] buildingthegraph.Multipleconnectionsbetweentwoverticesinthe
+[ 675] fromanodetoitsneighbors.TheGNNistrainedoneachgraphindi-
+[ 681] graph are merged, and self-loops are eliminated. We consider the
+[ 684] (G))
+[ 687] vidually. Then, the graph embedding (ENC is obtained from the
+[ 693] following graph features to capture the netlist’s complex topology
+[ 699] node embeddings with a permutation invariant aggregator, as shown
+[ 705] characteristics (e.g., connections and spectral).
+[ 711] in Fig. 3
+[ 717] 1) StronglyConnectedComponents(SCCs):Astrongcomponent
+[ 729] of G is a subgraph S of G if for any pair of vertices
+[ 726] u,v∈S
+[ 738] (G)= ( (v)|v∈V)
+[ 741] there is a directed cycle in S containing u and v. We compute ENC MEAN ENC (8)
+[ 765] Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore. Restrictions apply.
+=== Page 5 has 659 words ===
+[  30] AGNESINAetal.:PARAMETEROPTIMIZATIONOFVLSIPLACEMENTTHROUGHDEEPRL 1299
+[  51] TABLEIII
+[  60] OUR11ACTIONS
+[ 138] Fig.3. GraphembeddingusingaGNNpackageGraphSAGE[19].Wefirst
+[ 147] extract32featuresforeachnodeinthegraph.Next,wecalculatethemean
+[ 156] amongallnodesforeachfeature,resultingin32featuresfortheentiregraph.
+[ 216] bemadeMarkovianbyaggregatingallparametersevaluatedintoone
+[ 228] state. However, this aggregation can produce a state representation
+[ 240] impractically too large.
+[ 252] Wethuschoosetodefineourowndeterministicactionstochange
+[ 261] thesettingofasubsetofparameters.TheyrenderthestateMarkovian,
+[ 273] i.e.,givenstate–actionpair(st ,at ),theresultingstatest+1 isunique.
+[ 285] An advantage of fully observed determinism is that it allows plan-
+[ 297] ning.Startingfromstates0
+[ 294] andfollowingasatisfactorypolicyπ,the
+[ 309] trajectory
+[ 318] Fig.4. t-SNEvisualization[20]ofour20handcraftedplus32GNNfeatures
+[ 324] π ( −s0→ ) π ( −s1→ ) π ( s
+[ 327] −n−−1→
+[ 324] )
+[ 327] combined. Points representative of each netlist are well separated, proving
+[ 330] s0
+[ 327] − −
+[ 330] s1
+[ 327] − − ···− − −
+[ 330] sn (10)
+[ 336] graphfeaturescapturethedifferencesbetweennetlistswell.
+[ 348] leads to a parameter set sn of good quality. If π has been learned,
+[ 357] O(1)
+[ 360] sn can be computed directly in time without performing any
+[ 372] wheretheindividualnodeembeddingsareobtainedafterK recurrent placement.
+[ 384] updates Defining only two actions per placement parameter would result
+[ 393] ⎧ in 24 different actions, too many for the agent to learn well. Thus,
+[ 402] ⎪⎨xv
+[ 399] (0)
+[ 402] =(degree(v),fanout(v),area(v),type(v),...,)
+[ 405] we first decided to group variables per type (Boolean, Enumerate,
+[ 411] ( k+
+[ 414] 1
+[ 411] ) (
+[ 414] k
+[ 411] ) (k)
+[ 417] x
+[ 414] = (cid:7) (
+[ 417] xv
+[ 414] ,ρ({xu :e=(v,u)∈E}))
+[ 417] (9) N u m e ri c) a n d p e r pl a c e m e n t “ f o c u s” ( G lo b a l , D e t a il ed , E ff o r t) . T h e n ,
+[ 420] ⎪⎩ v
+[ 426] ( )
+[ 429] ( v ) = xv
+[ 426] K
+[ 429] . fo r ea c h gr o u p , w e d e fi n e e x p r e s s iv e y et s tr a i g h tf o r w ar d a c ti o n s s u c h
+[ 432] E N C
+[ 441] as FLIP for Booleans. For enumerates, DOWN
+[ 438] ≡
+[ 441] “pass from high to
+[ 447] ρ Function aggregates features of neighboring nodes, and function
+[ 453] medium,”forexample.Foranintegralparametervaluexdefinedina
+[ 456] (cid:7)
+[ 459] concatenates the node’s current representation with the aggre-
+[ 462] range[a,b],theupdatedvalueofactions UP/DOWN isobtainedwith
+[ 471] gated neighborhood information, which it then nonlinearizes and (cid:9)=min(max(x±(b−a)(cid:9)x0
+[ 474] ,a),b),where thesimpletransformationx
+[ 483] normalizes. (cid:9)x0 ∈ [0,1]
+[ 486] is a fixed delta defined per parameter. In the exper-
+[ 495] Thet-SNEprojectionintwodimensions[20]ofthevectorofgraph
+[ 498] iments,
+[ 495] (cid:9){eco
+[ 498] max
+[ 495] distance} = 0.10, (cid:9){legalization gap} = 0.10,
+[ 504] featuresisdisplayedinFig.4.Weseethatallnetlists’pointsarefar
+[ 510] and
+[ 507] (cid:9){max density} = 0.03.
+[ 510] The smaller delta for max density
+[ 516] apart,indicatingthatthecombinationofourhandcraftedandlearned
+[ 519] accounts for its larger effect, observed empirically, on the HPWL.
+[ 528] graph features distinguishes well the particularities of each netlist.
+[ 531] Wealsoaddonearmthatdoesnotmodifythecurrentsetofparam-
+[ 543] eters. Instead, it triggers an environment’s reset if it gets picked
+[ 552] E. Our Actions A
+[ 555] multiple times in a row. This leads to the 11 different actions
+[ 567] The state-of-the-art parameter auto-tuner presented in [3] uses a presented in Table III. Our action space is designed to be as simple
+[ 579] aspossibletohelpneuralnetworktrainingbutalsoexpressiveenough MABwhosearmsareclassicalsearchtechniques,suchasSimulated
+[ 588] so that such transformations can reach any parameter settings.
+[ 591] Annealing and GAs. Each technique modifies parameter sets differ-
+[ 603] ently, while the MAB algorithm tries to determine the arm with the
+[ 615] highestexpectedrewardquickly.Parametersearchisdonebyselect-
+[ 612] F. Our Reward Structure
+[ 624] ingasearchtechniqueoneatatime,wheretheselectionisbasedon
+[ 627] To learn with a single RL agent across various netlists with dif-
+[ 636] a credit assignment score that mixes exploration and exploitation.
+[ 639] ferent wire lengths, we cannot define a reward directly linear with
+[ 648] Weconsideredthepossibilityofusingthesesearcharmsasactions
+[ 651] HPWL. Thus, to help convergence, we adopt a normalized reward
+[ 660] in our RL framework. The problem with this option is that a fun-
+[ 663] function that renders the magnitude of the value approximations
+[ 672] damental assumption in RL tasks is that the Markov property of
+[ 675] similar among netlists, of the form
+[ 681] memorylessness holds; i.e., the optimal action should depend on the
+[ 690] HPWLHuman
+[ 687] −HPWLt.
+[ 693] last state alone. This assumption is not valid for arms such as GA := Baseline
+[ 696] Rt (11)
+[ 702] HPWLHuman
+[ 705] or any technique with population-based improvements which have a Baseline
+[ 717] current state depending on all prior states. Instead, they memorize a While defining rewards in this manner necessitates knowing
+[ 729] populationofone,usuallythebest,ormultipleparametersettingsto HPWLHuman Baseline, an expected baseline wire length per design,
+[ 741] create a new candidate setting. In principle, this representation can this only requires one placement to be completed by an engineer.
+[ 765] Authorized licensed use limited to: Indian Institute of Information technology Sricity. Downloaded on August 04,2026 at 11:25:34 UTC from IEEE Xplore. Restrictions apply.

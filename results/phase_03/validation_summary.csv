@@ -1,0 +1,11 @@
+metric,value,unit,description
+num_cells_tested,75067,cells,Total cells in RISCY-FPU-a-1-c2
+num_nets_tested,76569,nets,Total nets in RISCY-FPU-a-1-c2
+total_hpwl,33810876.2473,um,Total computed Half-Perimeter Wirelength
+mean_net_hpwl,441.5740,um,Average net HPWL
+max_net_hpwl,999.3721,um,Maximum net HPWL
+mean_wire_delay_proxy,42.1556,ps,Average Elmore wire delay proxy
+max_wire_delay_proxy,1384.1252,ps,Maximum Elmore wire delay proxy
+proxy_r_unit,0.25,Ohm/um,Wire resistance parameter
+proxy_c_unit,1.8e-16,F/um,Wire capacitance parameter
+status,PASSED,N/A,Phase 3 Technology validation passed

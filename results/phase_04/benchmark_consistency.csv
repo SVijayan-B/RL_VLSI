@@ -1,0 +1,5 @@
+benchmark_id,design,def_exists,netlist_exists,top_module,lef_exists,def_components,def_nets,def_pins,die_area_um2,missing_lef_cells,invalid_coords,status,details
+BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,True,True,pulpino_top,True,52147,55401,563,340297.02,0,0,PASS,All checks consistent
+BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,True,True,pulpino_top,True,52005,55265,563,272076.56,0,0,PASS,All checks consistent
+BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,True,True,pulpino_top,True,49987,53302,563,338950.9,0,0,PASS,All checks consistent
+BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,True,True,pulpino_top,True,49931,53246,563,338950.9,0,0,PASS,All checks consistent

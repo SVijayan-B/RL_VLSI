@@ -1,0 +1,35 @@
+{
+  "phase": 6,
+  "title": "Power Estimation & PDN IR-Drop Proxies",
+  "status": "COMPLETE",
+  "timestamp": "2026-10-02T16:18:00Z",
+  "git_commit": "532ef53d17b6e2b733a909659598019a207abcd8",
+  "python_version": "3.12.3",
+  "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64",
+  "openroad_image": "openroad/orfs:latest (94d3c1c19b47)",
+  "dataset_paths": {
+    "lef": "dataset/raw/circuitnet.lef",
+    "def_dir": "dataset/processed/DEF_decompressed/DEF",
+    "netlist_dir": "dataset/processed/netlists/netlist",
+    "graphs_dir": "dataset/graphs"
+  },
+  "benchmarks_evaluated": [
+    "BENCH_01_RISCY_C2_U70",
+    "BENCH_02_RISCY_C2_U90",
+    "BENCH_03_RISCY_C5_U70",
+    "BENCH_04_RISCY_C20_U70"
+  ],
+  "model_parameters": {
+    "v_dd_norm": 1.0,
+    "freq_norm": 1.0,
+    "c_unit_farad_per_um": 1.8e-16,
+    "c_gate_default_farad": 5.0e-16,
+    "r_sheet_pdn_ohm_sq": 0.05,
+    "switching_activity_model": "alpha = clip(0.15 + 0.10 * log10(fanout), 0.10, 0.60)",
+    "static_power_model": "area_normalized_static_proxy = 0.05 * total_cell_area_um2"
+  },
+  "grid_resolutions_tested": [8, 16, 32],
+  "default_grid_resolution": 16,
+  "validation_result": "PASSED (100% OK)",
+  "rl_reward_decision": "POWER_AS_SECONDARY_METRIC (Analysis & Multi-objective Evaluation only; HPWL remains primary)"
+}

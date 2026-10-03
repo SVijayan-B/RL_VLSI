@@ -1,0 +1,61 @@
+OpenROAD unknown 
+Features included (+) or not (-): -GPU +GUI -Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+=== GLOBAL PLACEMENT COMMANDS ===
+CMD: global_placement
+CMD: global_placement_debug
+=== DETAILED PLACEMENT COMMANDS ===
+CMD: detailed_placement
+=== HELP global_placement ===
+global_placement [-skip_initial_place] [-force_center_initial_place]
+   [-skip_nesterov_place] [-timing_driven] [-timing_driven_repair_timing]
+   [-routability_driven] [-virtual_cts] [-incremental] [-skip_io] [-place_ios]
+   [-bin_grid_count grid_count] [-density target_density]
+   [-init_density_penalty init_density_penalty]
+   [-init_wirelength_coef init_wirelength_coef] [-min_phi_coef min_phi_coef]
+   [-max_phi_coef max_phi_coef] [-reference_hpwl reference_hpwl]
+   [-overflow overflow] [-initial_place_max_iter initial_place_max_iter]
+   [-initial_place_max_fanout initial_place_max_fanout] [-routability_use_grt]
+   [-routability_target_rc_metric routability_target_rc_metric]
+   [-routability_check_overflow routability_check_overflow]
+   [-routability_snapshot_overflow routability_snapshot_overflow]
+   [-routability_max_density routability_max_density]
+   [-routability_inflation_ratio_coef routability_inflation_ratio_coef]
+   [-routability_max_inflation_ratio routability_max_inflation_ratio]
+   [-routability_min_congestion_for_inflation routability_min_congestion_for_inflation]
+   [-routability_max_inflation_total routability_max_inflation_total]
+   [-routability_net_weight_max routability_net_weight_max]
+   [-routability_congested_nets_percentage routability_congested_nets_percentage]
+   [-routability_rc_coefficients routability_rc_coefficients]
+   [-keep_resize_below_overflow keep_resize_below_overflow]
+   [-timing_driven_net_reweight_overflow timing_driven_net_reweight_overflow]
+   [-timing_driven_net_weight_max timing_driven_net_weight_max]
+   [-timing_driven_nets_percentage timing_driven_nets_percentage]
+   [-virtual_cts_max_skew_fraction virtual_cts_max_skew_fraction]
+   [-timing_driven_repair_tns_end_percent timing_driven_repair_tns_end_percent]
+   [-pad_left pad_left] [-pad_right pad_right] [-disable_revert_if_diverge]
+   [-disable_pin_density_adjust] [-random_seed random_seed]
+   [-perturb_dist perturb_dist] [-enable_routing_congestion] 
+
+
+=== HELP detailed_placement ===
+detailed_placement [-max_displacement disp|{disp_x disp_y}]
+   [-disallow_one_site_gaps] [-incremental] [-report_file_name file_name]
+   [-use_diamond_legalizer] [-site_search_window sites]
+   [-row_search_window rows] [-drc_penalty penalty] [-disable_window_extension]
+   [-quiet] 
+  -quiet  Do not report an error if no objects match.
+
+=== HELP improve_placement ===
+improve_placement [-random_seed seed] [-max_displacement disp|{disp_x disp_y}]
+   [-global_swap_args {options}] [-enable_extra_dpl bool]
+   [-disallow_one_site_gaps]  
+
+=== HELP optimize_placement ===
+[WARNING STA-0160] no commands match 'optimize_placement'.
+
+=== HELP check_placement ===
+check_placement [-verbose] [-disallow_one_site_gaps]
+   [-report_file_name file_name] 
+

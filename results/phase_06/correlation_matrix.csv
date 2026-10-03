@@ -1,0 +1,5 @@
+benchmark_id,pearson_hpwl_vs_power,spearman_hpwl_vs_power,pearson_fanout_vs_power,pearson_cap_vs_power
+BENCH_01_RISCY_C2_U70,0.3768,0.8077,0.997,0.9972
+BENCH_02_RISCY_C2_U90,0.4079,0.7514,0.9985,0.9978
+BENCH_03_RISCY_C5_U70,0.3888,0.8063,0.9972,0.9973
+BENCH_04_RISCY_C20_U70,0.3908,0.8097,0.9972,0.9973

@@ -1,0 +1,13 @@
+paper_parameter,paper_type,paper_focus,number_of_values,paper_range,paper_delta,paper_action_group,paper_table_reference,paper_notes
+eco max distance,integer,detail,101,"[0, 100]",0.10,UP/DOWN Detailed Numeric,Table I,"maximum distance allowed during placement legalization"
+legalization gap,integer,detail,101,"[0, 100]",0.10,UP/DOWN Detailed Numeric,Table I,"minimum sites gap between instances"
+max density,integer,global,101,"[0, 100]",0.03,UP/DOWN Global Numeric,Table I,"controls the maximum density of local bins"
+eco priority,enum,detail,3,"{none, eco, placed}","DOWN=high->med/low, UP=low->med/high",UP/DOWN Detailed Enumerate,Table I,"instance priority for refine place"
+activity power driven,enum,detail + effort,3,"{none, medium, high}",DOWN/UP Enumerate,UP/DOWN Effort / Detail,Table I,"level of effort for activity power driven placer"
+wire length opt,enum,detail + effort,3,"{none, medium, high}",DOWN/UP Enumerate,"UP/DOWN Effort / Detail, INVERT-MIX",Table I,"optimizes wire length by swapping cells"
+blockage channel,enum,global,3,"{none, soft, hard}",DOWN/UP Enumerate,UP/DOWN Global Enumerate,Table I,"creates placement blockages in narrow channels between macros"
+timing effort,enum,global + effort,2,"{none, low/medium, high}",DOWN/UP Enumerate,"UP/DOWN Effort, INVERT-MIX",Table I,"level of effort for timing driven placer. Number of values = 2 per Table I"
+clock power driven,enum,global + effort,3,"{none, medium, high}",DOWN/UP Enumerate,UP/DOWN Effort / Global,Table I,"level of effort for clock power driven placer. Number of values = 3 per Table I"
+congestion effort,enum,global + effort,3,"{none, low, high}",DOWN/UP Enumerate,"UP/DOWN Effort, INVERT-MIX",Table I,"the effort level for relieving congestion"
+clock gate aware,bool,global,2,"{true, false}",FLIP,FLIP Booleans,Table I,"specifies that placement is aware of clock gate cells in design"
+uniform density,bool,global,2,"{true, false}",FLIP,FLIP Booleans,Table I,"enables even cell distribution"

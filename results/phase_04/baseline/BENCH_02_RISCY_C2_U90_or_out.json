@@ -1,0 +1,12 @@
+{
+  "benchmark_id": "BENCH_02_RISCY_C2_U90",
+  "def_path": "/workspace/dataset/processed/DEF_decompressed/DEF/120-RISCY-a-1-c2-u0.9-m1-p1-f0.def",
+  "seed": 42,
+  "num_cells": 52005,
+  "num_nets": 55267,
+  "num_pins": 563,
+  "core_width_um": 522.27,
+  "core_height_um": 520.95,
+  "detailed_placement_status": "SUCCESS",
+  "runtime_sec": 133.374
+}
