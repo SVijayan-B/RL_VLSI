@@ -1,0 +1,118 @@
+{
+  "name": "Phase 10 OpenROAD Detailed Placement Parameter Space",
+  "version": "1.0.0",
+  "openroad_command": "detailed_placement",
+  "num_parameters": 6,
+  "parameters": [
+    {
+      "index": 0,
+      "name": "max_displacement",
+      "datatype": "integer",
+      "units": "sites",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0,
+      "step": 10,
+      "openroad_flag": "-max_displacement",
+      "mapping_confidence": "HIGH",
+      "verification_status": "VERIFIED",
+      "description": "Maximum cell displacement allowed during detailed placement legalization (sites)"
+    },
+    {
+      "index": 1,
+      "name": "site_search_window",
+      "datatype": "integer",
+      "units": "sites",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0,
+      "step": 10,
+      "openroad_flag": "-site_search_window",
+      "mapping_confidence": "HIGH",
+      "verification_status": "VERIFIED",
+      "description": "Horizontal site search window for finding legal cell placement positions"
+    },
+    {
+      "index": 2,
+      "name": "row_search_window",
+      "datatype": "integer",
+      "units": "rows",
+      "minimum": 0,
+      "maximum": 20,
+      "default": 0,
+      "step": 2,
+      "openroad_flag": "-row_search_window",
+      "mapping_confidence": "HIGH",
+      "verification_status": "VERIFIED",
+      "description": "Vertical row search window for legal placement candidates"
+    },
+    {
+      "index": 3,
+      "name": "disallow_one_site_gaps",
+      "datatype": "boolean",
+      "units": "binary",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0,
+      "step": 1,
+      "openroad_flag": "-disallow_one_site_gaps",
+      "mapping_confidence": "HIGH",
+      "verification_status": "VERIFIED",
+      "description": "Disallow single-site gaps between adjacent standard cells"
+    },
+    {
+      "index": 4,
+      "name": "use_diamond_legalizer",
+      "datatype": "boolean",
+      "units": "binary",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0,
+      "step": 1,
+      "openroad_flag": "-use_diamond_legalizer",
+      "mapping_confidence": "HIGH",
+      "verification_status": "VERIFIED",
+      "description": "Use diamond search pattern during legalization search"
+    },
+    {
+      "index": 5,
+      "name": "disable_window_extension",
+      "datatype": "boolean",
+      "units": "binary",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0,
+      "step": 1,
+      "openroad_flag": "-disable_window_extension",
+      "mapping_confidence": "HIGH",
+      "verification_status": "VERIFIED",
+      "description": "Disable dynamic search window expansion when candidates are exhausted"
+    }
+  ],
+  "unsupported_paper_parameters": [
+    {
+      "name": "global_wirelength_weight",
+      "reason": "Innovus global placement force control; OpenROAD global placement requires unavailable .lib files"
+    },
+    {
+      "name": "timing_driven_effort",
+      "reason": "Requires commercial signoff timing engine (.lib) unavailable in CircuitNet N28"
+    },
+    {
+      "name": "congestion_effort",
+      "reason": "Innovus-specific global routing congestion weighting"
+    },
+    {
+      "name": "pin_access_opt",
+      "reason": "Commercial foundry pin density rule optimization"
+    },
+    {
+      "name": "clock_tree_synthesis_effort",
+      "reason": "CTS stage parameter; Phase 10 focuses strictly on placement"
+    },
+    {
+      "name": "power_driven_effort",
+      "reason": "Commercial Innovus dynamic power optimization flag"
+    }
+  ]
+}

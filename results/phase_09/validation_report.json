@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "timestamp": "2026-10-04T12:08:40Z",
+  "checks": [
+    {
+      "name": "Checkpoints Existence",
+      "status": "PASS",
+      "details": "best.pt and final.pt exist in /home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_09/checkpoints"
+    },
+    {
+      "name": "Model Config Alignment",
+      "status": "PASS",
+      "details": "in_dim=7, embedding_dim=32, training_designs=51"
+    },
+    {
+      "name": "Graph Embeddings Integrity",
+      "status": "PASS",
+      "details": "54 designs, 32 dims, zero NaN/Inf"
+    },
+    {
+      "name": "Node Embeddings Coverage",
+      "status": "PASS",
+      "details": "54/54 files verified"
+    },
+    {
+      "name": "Node Embeddings Values",
+      "status": "PASS",
+      "details": "All 2,373,702 node embeddings are finite (no NaN/Inf)"
+    },
+    {
+      "name": "Cell Ordering Preserved",
+      "status": "PASS",
+      "details": "Exact match with canonical graph cell_names"
+    },
+    {
+      "name": "Test Design Quarantine",
+      "status": "PASS",
+      "details": "3 benchmark designs isolated and archived in test_embeddings/"
+    },
+    {
+      "name": "Deterministic Reproducibility",
+      "status": "PASS",
+      "details": "54/54 designs bit-exact or delta < 1e-6"
+    },
+    {
+      "name": "Publication Figures",
+      "status": "PASS",
+      "details": "All 4 figures generated in /home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_09/figures"
+    }
+  ]
+}

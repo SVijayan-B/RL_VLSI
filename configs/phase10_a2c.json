@@ -1,0 +1,22 @@
+{
+  "algorithm": "Advantage Actor-Critic (A2C)",
+  "version": "1.0.0",
+  "seed": 42,
+  "state_dim": 41,
+  "action_dim": 8,
+  "hidden_dim": 64,
+  "learning_rate": 0.0007,
+  "gamma": 0.99,
+  "entropy_coef": 0.01,
+  "value_loss_coef": 0.5,
+  "max_grad_norm": 0.5,
+  "rollout_length": 5,
+  "smoke_episodes": 3,
+  "smoke_benchmarks": [
+    "BENCH_01_RISCY_C2_U70"
+  ],
+  "provenance": {
+    "reference": "Agnesina et al., IEEE TCAD 2023",
+    "adaptation": "CircuitNet N28 OpenROAD Verified Placement"
+  }
+}

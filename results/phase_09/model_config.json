@@ -1,0 +1,25 @@
+{
+  "seed": 42,
+  "input_dim": 7,
+  "hidden_dim": 64,
+  "embedding_dim": 32,
+  "dropout": 0.2,
+  "aggregation": "mean",
+  "negative_samples": 10,
+  "temperature": 0.5,
+  "learning_rate": 0.001,
+  "weight_decay": 1e-05,
+  "epochs": 15,
+  "device": "cuda",
+  "checkpoint_frequency": 5,
+  "high_fanout_pruning_threshold": 50,
+  "training_designs_count": 51,
+  "quarantined_test_designs": [
+    "RISCY-a-1-c20",
+    "RISCY-a-1-c2",
+    "RISCY-a-1-c5"
+  ],
+  "best_loss": 1.318038,
+  "final_loss": 1.318038,
+  "total_training_time_seconds": 73.43
+}

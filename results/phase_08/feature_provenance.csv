@@ -1,0 +1,22 @@
+feature_name,feature_domain,source_file,source_field,formula,units,dtype,normalization,missing_value_policy,validation_status
+area,cell,dataset/raw/circuitnet.lef,"MACRO -> SIZE, MACRO -> ORIGIN",width * height,um^2,float32,"StandardScaler (z-score) / MinMaxScaler [0, 1]",Default to 0.882 um^2 (1-pitch inverter in circuitnet.lef),VERIFIED
+width,cell,dataset/raw/circuitnet.lef,MACRO -> SIZE width,width,um,float32,StandardScaler (z-score) / Divided by CoreSite width (0.21 um),Default to 0.84 um (4 CoreSites),VERIFIED
+height,cell,dataset/raw/circuitnet.lef,MACRO -> SIZE height,height,um,float32,StandardScaler (z-score) / Divided by CoreSite height (1.05 um),Default to 1.05 um (1 standard cell row),VERIFIED
+aspect_ratio,cell,dataset/raw/circuitnet.lef,Derived from width and height,width / height (with height > 0 defense),unitless,float32,StandardScaler (z-score) / Log-transformed,Default to 0.80,VERIFIED
+is_macro,cell,dataset/raw/circuitnet.lef + dataset/circuit_graph/node_attr,MACRO CLASS or cell type name,"1.0 if CLASS in (BLOCK, RING) or cell_type in (SRAM, PLL, ROM) else 0.0","binary {0.0, 1.0}",float32,None (Identity binary indicator),Default to 0.0 (Standard cell),VERIFIED
+cell_degree,cell,dataset/circuit_graph/pin_attr,Row 2 (node_idx) unrolled connections,sum_{p in P} I(cell(p) == u),pins,float32,StandardScaler (z-score) / Divided by max degree,Default to 0.0,VERIFIED
+log_degree,cell,dataset/circuit_graph/pin_attr,Derived from cell_degree,log(1 + cell_degree),log(pins),float32,StandardScaler (z-score),Default to 0.0,VERIFIED
+net_degree,net,dataset/circuit_graph/pin_attr,Row 1 (net_idx) unrolled connections,sum_{p in P} I(net(p) == v),pins,float32,StandardScaler (z-score) / Divided by max degree,Default to 0.0,VERIFIED
+log_degree,net,dataset/circuit_graph/pin_attr,Derived from net_degree,log(1 + net_degree),log(pins),float32,StandardScaler (z-score),Default to 0.0,VERIFIED
+is_clock,net,dataset/circuit_graph/net_attr,Row 0 (net_names),"1.0 if ""clk"" in net_name.lower() or ""clock"" in net_name.lower() else 0.0","binary {0.0, 1.0}",float32,None (Identity binary indicator),Default to 0.0,VERIFIED
+is_reset,net,dataset/circuit_graph/net_attr,Row 0 (net_names),"1.0 if ""rst"" in net_name.lower() or ""reset"" in net_name.lower() else 0.0","binary {0.0, 1.0}",float32,None (Identity binary indicator),Default to 0.0,VERIFIED
+num_cells,graph,dataset/circuit_graph/node_attr,node_attr.shape[1],N,cells,int64,StandardScaler across designs,None (Exact netlist count),VERIFIED
+num_nets,graph,dataset/circuit_graph/net_attr,net_attr.shape[1],M,nets,int64,StandardScaler across designs,None (Exact netlist count),VERIFIED
+num_pins,graph,dataset/circuit_graph/pin_attr,pin_names.shape[0],P (unrolled pin instances),pins,int64,StandardScaler across designs,None (Exact netlist count),VERIFIED
+num_macros,graph,dataset/circuit_graph/node_attr + LEF,Sum of is_macro in design,sum(is_macro),macros,int64,"MinMaxScaler [0, 1]",None (Exact LEF mapping),VERIFIED
+total_cell_area,graph,dataset/graphs/*.npz metadata_json,metadata_json -> total_cell_area,"sum(cell_features[:, 0])",um^2,float64,StandardScaler across designs,None (Sum of cell areas),VERIFIED
+avg_net_degree,graph,dataset/graphs/*.npz net_features,"net_features[:, 0]",mean(net_degree),pins/net,float64,StandardScaler across designs,None,VERIFIED
+max_net_degree,graph,dataset/graphs/*.npz net_features,"net_features[:, 0]",max(net_degree),pins,int64,StandardScaler across designs,None,VERIFIED
+bipartite_density,graph,dataset/metadata/graph_statistics.csv,bipartite_density,num_pins / (num_cells * num_nets),"density [0, 1]",float64,MinMaxScaler / Log-transformed,None,VERIFIED
+target_clock_period_ns,graph,dataset/metadata/design_manifest.csv,clock_period_ns,"Synthesized clock constraint (2.0, 5.0, or 20.0)",ns,float64,Categorical One-Hot or MinMaxScaler,Inferred from design naming convention c2/c5/c20,VERIFIED
+architecture_variant,graph,dataset/metadata/design_manifest.csv,base_design,"Core architecture name (RISCY-FPU, RISCY, zero-riscy)",categorical string,string,"One-hot encoding [1, 0, 0], [0, 1, 0], [0, 0, 1]",Inferred from design key,VERIFIED

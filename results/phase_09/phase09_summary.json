@@ -1,0 +1,13 @@
+{
+  "phase": 9,
+  "title": "GraphSAGE Architecture & Node Embeddings",
+  "status": "PASS",
+  "architecture": "2-Layer Mean GraphSAGE (7 -> 64 -> 32)",
+  "objective": "Unsupervised InfoNCE Contrastive Learning",
+  "training_designs": 51,
+  "held_out_test_designs": 3,
+  "total_node_embeddings_generated": 2373702,
+  "total_graph_embeddings_generated": 54,
+  "embedding_dimension": 32,
+  "reproducibility": "100% PASS"
+}

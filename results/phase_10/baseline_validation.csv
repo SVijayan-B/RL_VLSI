@@ -1,0 +1,5 @@
+benchmark_id,design_id,phase4_reference_hpwl,reproduced_hpwl,absolute_difference,percentage_difference,openroad_legalized_hpwl,delta_vs_legalized_pct,same_DEF,same_stage,same_units,same_metric_definition,pass_fail
+BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,730968.99,730968.99,0.0,0.0,731162.9,0.027,True,initial_placement (analytical baseline),microns,Canonical Multi-Pin Signal HPWL,PASS
+BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,585708.96,585708.96,0.0,0.0,708651.3,17.349,True,initial_placement (analytical baseline),microns,Canonical Multi-Pin Signal HPWL,PASS
+BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,699223.74,699223.74,0.0,0.0,701234.8,0.287,True,initial_placement (analytical baseline),microns,Canonical Multi-Pin Signal HPWL,PASS
+BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,699355.68,699355.68,0.0,0.0,700395.9,0.149,True,initial_placement (analytical baseline),microns,Canonical Multi-Pin Signal HPWL,PASS

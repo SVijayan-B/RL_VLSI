@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "description": "Normalization parameters for Phase 9 GraphSAGE feature transformation",
+    "training_designs_count": 51,
+    "test_designs_count": 3,
+    "test_designs_quarantined": [
+      "RISCY-a-1-c20",
+      "RISCY-a-1-c2",
+      "RISCY-a-1-c5"
+    ],
+    "source_designs": "51 training designs (zero leakage from test benchmarks)",
+    "canonical_cell_dimension": 7,
+    "canonical_net_dimension": 4
+  },
+  "cell_features_standardization": {
+    "area": {
+      "mean": 5.312047004699707,
+      "std": 335.64190673828125
+    },
+    "width": {
+      "mean": 1.5822681188583374,
+      "std": 2.61236572265625
+    },
+    "height": {
+      "mean": 1.0709288120269775,
+      "std": 1.61978018283844
+    },
+    "aspect_ratio": {
+      "mean": 1.4801651239395142,
+      "std": 1.1648684740066528
+    },
+    "is_macro": {
+      "mean": 0.00021574427955783904,
+      "std": 0.014686651527881622
+    },
+    "cell_degree": {
+      "mean": 4.0301313400268555,
+      "std": 4.158888816833496
+    },
+    "log_degree": {
+      "mean": 1.579335331916809,
+      "std": 0.2506471574306488
+    }
+  },
+  "cell_features_minmax": {
+    "area": {
+      "min": 0.4410000145435333,
+      "max": 34371.0234375,
+      "scale": 34370.58243748546
+    },
+    "width": {
+      "min": 0.41999998688697815,
+      "max": 242.70750427246094,
+      "scale": 242.28750428557396
+    },
+    "height": {
+      "min": 1.0499999523162842,
+      "max": 183.66000366210938,
+      "scale": 182.6100037097931
+    },
+    "aspect_ratio": {
+      "min": 0.4000000059604645,
+      "max": 7.199999809265137,
+      "scale": 6.799999803304672
+    },
+    "is_macro": {
+      "min": 0.0,
+      "max": 1.0,
+      "scale": 1.0
+    },
+    "cell_degree": {
+      "min": 1.0,
+      "max": 936.0,
+      "scale": 935.0
+    },
+    "log_degree": {
+      "min": 0.6931471824645996,
+      "max": 6.8426833152771,
+      "scale": 6.1495361328125
+    }
+  },
+  "net_features_standardization": {
+    "net_degree": {
+      "mean": 3.8689515590667725,
+      "std": 12.56528377532959
+    },
+    "log_degree": {
+      "mean": 1.3567445278167725,
+      "std": 0.48816969990730286
+    },
+    "is_clock": {
+      "mean": 0.004336867481470108,
+      "std": 0.06571194529533386
+    },
+    "is_reset": {
+      "mean": 0.0018818079261109233,
+      "std": 0.043338973075151443
+    }
+  },
+  "net_features_minmax": {
+    "net_degree": {
+      "min": 1.0,
+      "max": 3661.0,
+      "scale": 3660.0
+    },
+    "log_degree": {
+      "min": 0.6931471824645996,
+      "max": 8.205764770507812,
+      "scale": 7.512617588043213
+    },
+    "is_clock": {
+      "min": 0.0,
+      "max": 1.0,
+      "scale": 1.0
+    },
+    "is_reset": {
+      "min": 0.0,
+      "max": 1.0,
+      "scale": 1.0
+    }
+  }
+}

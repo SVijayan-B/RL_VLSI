@@ -1,0 +1,36 @@
+{
+  "audit_timestamp": "2026-10-03T11:02:17Z",
+  "audit_status": "PASSED",
+  "checks": [
+    {
+      "check_name": "no_future_placement_coordinates_in_features",
+      "passed": true,
+      "details": "Cell features strictly contain LEF geometric dimensions (width, height, area), aspect ratio, macro class, and netlist connectivity degree. No placed DEF (x,y) coordinates exist in cell_features."
+    },
+    {
+      "check_name": "no_openroad_results_in_graph_features",
+      "passed": true,
+      "details": "Features contain zero OpenROAD outputs, OpenDB instances, or DPL displacement logs."
+    },
+    {
+      "check_name": "no_rl_reward_leakage",
+      "passed": true,
+      "details": "Features contain zero HPWL reductions, congestion proxy penalties, or Phase 7 reward formulations."
+    },
+    {
+      "check_name": "no_phase7_parameter_outcomes_in_features",
+      "passed": true,
+      "details": "Parameter sweep results (e.g. max_displacement, diamond legalizer runtime) are completely absent from graph feature matrices."
+    },
+    {
+      "check_name": "test_benchmark_isolation_in_normalization",
+      "passed": true,
+      "details": "Normalization parameters in normalization_parameters.json are fitted strictly on the 51 training designs. Benchmark test designs ['RISCY-a-1-c20', 'RISCY-a-1-c2', 'RISCY-a-1-c5'] are quarantined."
+    },
+    {
+      "check_name": "canonical_feature_dimensions_locked",
+      "passed": true,
+      "details": "cell_features is strictly [N, 7], net_features is strictly [M, 4]. No arbitrary eighth feature or hidden target labels added."
+    }
+  ]
+}

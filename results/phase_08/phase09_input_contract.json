@@ -1,0 +1,126 @@
+{
+  "schema_version": "2.0.0",
+  "contract_name": "Phase 9 GraphSAGE Input Interface Contract",
+  "input_topology": {
+    "homogeneous_cell_graph": {
+      "edge_index_cell_key": "edge_index_cell",
+      "shape": "[2, E_cell]",
+      "dtype": "int32",
+      "high_fanout_pruning_threshold": 50,
+      "description": "Projected cell-to-cell clique connectivity excluding nets with degree > 50"
+    },
+    "heterogeneous_bipartite_graph": {
+      "edge_index_bipartite_key": "edge_index_bipartite",
+      "shape": "[2, E_bip]",
+      "dtype": "int32",
+      "description": "Lossless bipartite cell-to-net connectivity"
+    }
+  },
+  "cell_node_features": {
+    "feature_key": "cell_features",
+    "shape": "[N, 7]",
+    "dtype": "float32",
+    "dimension": 7,
+    "features": [
+      {
+        "index": 0,
+        "name": "area",
+        "units": "um^2",
+        "description": "Cell active silicon area"
+      },
+      {
+        "index": 1,
+        "name": "width",
+        "units": "um",
+        "description": "Cell bounding box width"
+      },
+      {
+        "index": 2,
+        "name": "height",
+        "units": "um",
+        "description": "Cell bounding box height"
+      },
+      {
+        "index": 3,
+        "name": "aspect_ratio",
+        "units": "unitless",
+        "description": "width / height"
+      },
+      {
+        "index": 4,
+        "name": "is_macro",
+        "units": "binary",
+        "description": "1.0 if macro/block, else 0.0"
+      },
+      {
+        "index": 5,
+        "name": "cell_degree",
+        "units": "pins",
+        "description": "Number of connected unrolled signal pins"
+      },
+      {
+        "index": 6,
+        "name": "log_degree",
+        "units": "log(pins)",
+        "description": "log(1 + cell_degree)"
+      }
+    ],
+    "node_ordering": "Identical to cell_names array [N]"
+  },
+  "net_node_features": {
+    "feature_key": "net_features",
+    "shape": "[M, 4]",
+    "dtype": "float32",
+    "dimension": 4,
+    "features": [
+      {
+        "index": 0,
+        "name": "net_degree",
+        "units": "pins",
+        "description": "Number of sink/driver pins on net"
+      },
+      {
+        "index": 1,
+        "name": "log_degree",
+        "units": "log(pins)",
+        "description": "log(1 + net_degree)"
+      },
+      {
+        "index": 2,
+        "name": "is_clock",
+        "units": "binary",
+        "description": "1.0 if clock net, else 0.0"
+      },
+      {
+        "index": 3,
+        "name": "is_reset",
+        "units": "binary",
+        "description": "1.0 if reset net, else 0.0"
+      }
+    ],
+    "net_ordering": "Identical to net_names array [M]"
+  },
+  "graph_level_conditioning": {
+    "features_csv": "results/phase_08/graph_level_features.csv",
+    "num_designs": 54,
+    "dimension": 10,
+    "features": [
+      "num_cells",
+      "num_nets",
+      "num_pins",
+      "num_macros",
+      "total_cell_area",
+      "avg_net_degree",
+      "max_net_degree",
+      "bipartite_density",
+      "target_clock_period_ns",
+      "architecture_variant"
+    ]
+  },
+  "downstream_consumption_rules": [
+    "GraphSAGE must take node feature dimension of EXACTLY 7.",
+    "DO NOT assume an 8th feature or modify dimension without a formally approved schema update.",
+    "Normalization parameters in normalization_parameters.json must be applied prior to convolution.",
+    "GraphSAGE node embeddings must project into 32 dimensions as specified by Agnesina et al."
+  ]
+}
