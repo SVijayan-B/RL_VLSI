@@ -11,9 +11,9 @@ A controlled smoke training experiment was conducted to verify end-to-end integr
 ## 2. Training Trajectory Summary
 | Episode | Steps | Return | Final HPWL (um) | Baseline HPWL (um) | Rel HPWL Change | Total A2C Loss |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 1 | 5 | 0.003359 | 728,704.74 | 731,162.90 | +0.0034 | 0.253847 |
-| 2 | 5 | 0.001065 | 730,384.21 | 731,162.90 | +0.0011 | 0.248131 |
-| 3 | 5 | 0.000264 | 730,968.99 | 731,162.90 | +0.0003 | 0.231622 |
+| 1 | 5 | 0.002299 | 729,482.10 | 731,162.90 | +0.0023 | 0.088993 |
+| 2 | 5 | 0.003799 | 728,386.24 | 731,162.90 | +0.0038 | 0.066766 |
+| 3 | 5 | 0.003094 | 728,898.05 | 731,162.90 | +0.0031 | 0.049997 |
 
 ## 3. Manual Transition Audit
 All recorded transitions were verified against parameter boundaries, valid action mappings, deterministic state evolution, and reward computation. Zero NaN or Inf anomalies were observed.

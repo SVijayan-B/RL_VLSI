@@ -1,0 +1,103 @@
+{
+  "phase": "Phase 11",
+  "seeds_completed": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "total_seeds": 5,
+  "timestamp": "2026-10-04 14:11:59Z",
+  "statistics": {
+    "mean_best_return": 0.0129288,
+    "std_best_return": 0.0024234557351022526,
+    "mean_best_impr_pct": 1.2860200000000002,
+    "std_best_impr_pct": 0.23936111212976932,
+    "min_best_impr_pct": 0.9181,
+    "max_best_impr_pct": 1.5342,
+    "total_transitions_all_seeds": 5000
+  },
+  "seed_details": [
+    {
+      "seed": 42,
+      "training_config_hash": "sha256_phase11_proto_v1",
+      "graphsage_checkpoint": "results/phase_09/checkpoints/graphsage_best.pt",
+      "dataset_version": "CircuitNet_28nm_v1",
+      "timestamp": "2026-10-04 14:11:52Z",
+      "total_episodes": 100,
+      "total_transitions": 1000,
+      "best_training_episode": 42,
+      "best_training_return": 0.009207,
+      "best_training_improvement_pct": 0.9181,
+      "final_training_return": -1e-06,
+      "final_training_improvement_pct": 0.0,
+      "training_design_count": 51,
+      "elapsed_seconds": 1.77
+    },
+    {
+      "seed": 43,
+      "training_config_hash": "sha256_phase11_proto_v1",
+      "graphsage_checkpoint": "results/phase_09/checkpoints/graphsage_best.pt",
+      "dataset_version": "CircuitNet_28nm_v1",
+      "timestamp": "2026-10-04 14:11:54Z",
+      "total_episodes": 100,
+      "total_transitions": 1000,
+      "best_training_episode": 73,
+      "best_training_return": 0.013032,
+      "best_training_improvement_pct": 1.2964,
+      "final_training_return": -1.1e-05,
+      "final_training_improvement_pct": 0.0,
+      "training_design_count": 51,
+      "elapsed_seconds": 1.64
+    },
+    {
+      "seed": 44,
+      "training_config_hash": "sha256_phase11_proto_v1",
+      "graphsage_checkpoint": "results/phase_09/checkpoints/graphsage_best.pt",
+      "dataset_version": "CircuitNet_28nm_v1",
+      "timestamp": "2026-10-04 14:11:56Z",
+      "total_episodes": 100,
+      "total_transitions": 1000,
+      "best_training_episode": 99,
+      "best_training_return": 0.01232,
+      "best_training_improvement_pct": 1.2264,
+      "final_training_return": -6e-06,
+      "final_training_improvement_pct": 0.0,
+      "training_design_count": 51,
+      "elapsed_seconds": 1.85
+    },
+    {
+      "seed": 45,
+      "training_config_hash": "sha256_phase11_proto_v1",
+      "graphsage_checkpoint": "results/phase_09/checkpoints/graphsage_best.pt",
+      "dataset_version": "CircuitNet_28nm_v1",
+      "timestamp": "2026-10-04 14:11:57Z",
+      "total_episodes": 100,
+      "total_transitions": 1000,
+      "best_training_episode": 67,
+      "best_training_return": 0.01464,
+      "best_training_improvement_pct": 1.455,
+      "final_training_return": -7e-06,
+      "final_training_improvement_pct": 0.0,
+      "training_design_count": 51,
+      "elapsed_seconds": 1.59
+    },
+    {
+      "seed": 46,
+      "training_config_hash": "sha256_phase11_proto_v1",
+      "graphsage_checkpoint": "results/phase_09/checkpoints/graphsage_best.pt",
+      "dataset_version": "CircuitNet_28nm_v1",
+      "timestamp": "2026-10-04 14:11:59Z",
+      "total_episodes": 100,
+      "total_transitions": 1000,
+      "best_training_episode": 41,
+      "best_training_return": 0.015445,
+      "best_training_improvement_pct": 1.5342,
+      "final_training_return": -1.7e-05,
+      "final_training_improvement_pct": 0.0,
+      "training_design_count": 51,
+      "elapsed_seconds": 1.62
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+design,stage,error,runtime,output_path
+RISCY-FPU-a-1-c2,BASELINE_DPL,"DPL-0033
+",6.920674085617065,/home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_11d/reconstructed_defs/RISCY-FPU-a-1-c2.def
+RISCY-FPU-a-2-c20,GEOMETRY_RECONSTRUCTION,"Overlaps:1, OutDie:0, IllegalSites:0",7.446703195571899,/home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_11d/reconstructed_defs/RISCY-FPU-a-2-c20.def
+RISCY-FPU-a-3-c2,BASELINE_DPL,"DPL-0036
+DPL-0033
+",12.272320747375488,/home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_11d/reconstructed_defs/RISCY-FPU-a-3-c2.def
+RISCY-b-1-c2,GEOMETRY_RECONSTRUCTION,"Overlaps:1, OutDie:0, IllegalSites:0",3.0170021057128906,/home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_11d/reconstructed_defs/RISCY-b-1-c2.def
+RISCY-b-2-c2,GEOMETRY_RECONSTRUCTION,"Overlaps:1, OutDie:0, IllegalSites:0",3.39422607421875,/home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_11d/reconstructed_defs/RISCY-b-2-c2.def
+RISCY-b-2-c5,GEOMETRY_RECONSTRUCTION,"Overlaps:1, OutDie:0, IllegalSites:0",3.256999969482422,/home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_11d/reconstructed_defs/RISCY-b-2-c5.def
+zero-riscy-a-1-c2,GEOMETRY_RECONSTRUCTION,"Overlaps:1, OutDie:0, IllegalSites:0",3.746527910232544,/home/b_siddarth_vijayan/CircuitNet_28nm/results/phase_11d/reconstructed_defs/zero-riscy-a-1-c2.def

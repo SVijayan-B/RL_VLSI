@@ -1,0 +1,66 @@
+design_id,configuration,parameter_values,status,initial_hpwl,baseline_legalized_hpwl,legalized_hpwl,hpwl_delta_um,hpwl_delta_percent,runtime_sec,check_placement_errors,reconstruction_valid,deterministic,classification
+RISCY-FPU-a-1-c2,BASELINE,-use_diamond_legalizer,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.890087604522705,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,max_displacement_10,-use_diamond_legalizer -max_displacement 10,FAIL,,8256849.8,,,,5.151525259017944,11,True,True,FAILED
+RISCY-FPU-a-1-c2,max_displacement_20,-use_diamond_legalizer -max_displacement 20,FAIL,,8256849.8,,,,4.8255510330200195,2,True,True,FAILED
+RISCY-FPU-a-1-c2,max_displacement_50,-use_diamond_legalizer -max_displacement 50,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.105382919311523,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,max_displacement_100,-use_diamond_legalizer -max_displacement 100,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,4.845444917678833,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,site_search_window_10,-use_diamond_legalizer -site_search_window 10,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,4.468683958053589,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,site_search_window_50,-use_diamond_legalizer -site_search_window 50,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.240810394287109,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,site_search_window_100,-use_diamond_legalizer -site_search_window 100,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.067843914031982,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,row_search_window_2,-use_diamond_legalizer -row_search_window 2,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.712245464324951,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,row_search_window_6,-use_diamond_legalizer -row_search_window 6,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.682894468307495,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,row_search_window_20,-use_diamond_legalizer -row_search_window 20,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.057884216308594,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,disallow_one_site_gaps,-use_diamond_legalizer -disallow_one_site_gaps,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.287938833236694,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-a-1-c2,disable_window_extension,-use_diamond_legalizer -disable_window_extension,PASS,8253476.5,8256849.8,8256849.8,0.0,0.0,5.296025991439819,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,BASELINE,-use_diamond_legalizer,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.860205888748169,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,max_displacement_10,-use_diamond_legalizer -max_displacement 10,FAIL,,3678521.9,,,,3.872684955596924,7,True,True,FAILED
+RISCY-FPU-b-1-c20,max_displacement_20,-use_diamond_legalizer -max_displacement 20,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.5812876224517822,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,max_displacement_50,-use_diamond_legalizer -max_displacement 50,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.7332847118377686,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,max_displacement_100,-use_diamond_legalizer -max_displacement 100,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.3301894664764404,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,site_search_window_10,-use_diamond_legalizer -site_search_window 10,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.611861228942871,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,site_search_window_50,-use_diamond_legalizer -site_search_window 50,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.7509350776672363,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,site_search_window_100,-use_diamond_legalizer -site_search_window 100,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.635205030441284,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,row_search_window_2,-use_diamond_legalizer -row_search_window 2,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.210606098175049,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,row_search_window_6,-use_diamond_legalizer -row_search_window 6,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.70957612991333,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,row_search_window_20,-use_diamond_legalizer -row_search_window 20,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.6503469944000244,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,disallow_one_site_gaps,-use_diamond_legalizer -disallow_one_site_gaps,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.830533266067505,0,True,True,LEGAL_UNCHANGED
+RISCY-FPU-b-1-c20,disable_window_extension,-use_diamond_legalizer -disable_window_extension,PASS,3674132.0,3678521.9,3678521.9,0.0,0.0,3.361572027206421,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,BASELINE,-use_diamond_legalizer,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,2.9331066608428955,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,max_displacement_10,-use_diamond_legalizer -max_displacement 10,FAIL,,4861249.7,,,,3.4398746490478516,2,True,True,FAILED
+RISCY-a-2-c2,max_displacement_20,-use_diamond_legalizer -max_displacement 20,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.608048915863037,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,max_displacement_50,-use_diamond_legalizer -max_displacement 50,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.8837637901306152,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,max_displacement_100,-use_diamond_legalizer -max_displacement 100,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,4.170806169509888,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,site_search_window_10,-use_diamond_legalizer -site_search_window 10,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,4.131786584854126,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,site_search_window_50,-use_diamond_legalizer -site_search_window 50,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.895761251449585,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,site_search_window_100,-use_diamond_legalizer -site_search_window 100,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.7374563217163086,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,row_search_window_2,-use_diamond_legalizer -row_search_window 2,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.0010900497436523,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,row_search_window_6,-use_diamond_legalizer -row_search_window 6,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.3973968029022217,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,row_search_window_20,-use_diamond_legalizer -row_search_window 20,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.795499563217163,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,disallow_one_site_gaps,-use_diamond_legalizer -disallow_one_site_gaps,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,4.121982097625732,0,True,True,LEGAL_UNCHANGED
+RISCY-a-2-c2,disable_window_extension,-use_diamond_legalizer -disable_window_extension,PASS,4856912.6,4861249.7,4861249.7,0.0,0.0,3.958587408065796,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,BASELINE,-use_diamond_legalizer,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.2278130054473877,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,max_displacement_10,-use_diamond_legalizer -max_displacement 10,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.328232765197754,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,max_displacement_20,-use_diamond_legalizer -max_displacement 20,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,2.9154624938964844,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,max_displacement_50,-use_diamond_legalizer -max_displacement 50,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.043518304824829,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,max_displacement_100,-use_diamond_legalizer -max_displacement 100,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.2624804973602295,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,site_search_window_10,-use_diamond_legalizer -site_search_window 10,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.277453660964966,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,site_search_window_50,-use_diamond_legalizer -site_search_window 50,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.2636020183563232,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,site_search_window_100,-use_diamond_legalizer -site_search_window 100,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.4805660247802734,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,row_search_window_2,-use_diamond_legalizer -row_search_window 2,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,2.951181650161743,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,row_search_window_6,-use_diamond_legalizer -row_search_window 6,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.0193536281585693,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,row_search_window_20,-use_diamond_legalizer -row_search_window 20,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,2.939431667327881,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,disallow_one_site_gaps,-use_diamond_legalizer -disallow_one_site_gaps,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,2.9921932220458984,0,True,True,LEGAL_UNCHANGED
+zero-riscy-a-1-c5,disable_window_extension,-use_diamond_legalizer -disable_window_extension,PASS,3677021.1,3677735.1,3677735.1,0.0,0.0,3.1128296852111816,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,BASELINE,-use_diamond_legalizer,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.4514529705047607,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,max_displacement_10,-use_diamond_legalizer -max_displacement 10,FAIL,,2386646.3,,,,2.2806975841522217,13,True,True,FAILED
+zero-riscy-b-1-c2,max_displacement_20,-use_diamond_legalizer -max_displacement 20,FAIL,,2386646.3,,,,2.395728349685669,5,True,True,FAILED
+zero-riscy-b-1-c2,max_displacement_50,-use_diamond_legalizer -max_displacement 50,PASS,2380997.3,2386646.3,2386547.9,-98.39999999990687,-0.004122940211119966,2.4305012226104736,0,True,True,LEGAL_IMPROVED
+zero-riscy-b-1-c2,max_displacement_100,-use_diamond_legalizer -max_displacement 100,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.3559021949768066,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,site_search_window_10,-use_diamond_legalizer -site_search_window 10,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.359137535095215,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,site_search_window_50,-use_diamond_legalizer -site_search_window 50,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.444612741470337,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,site_search_window_100,-use_diamond_legalizer -site_search_window 100,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.370846748352051,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,row_search_window_2,-use_diamond_legalizer -row_search_window 2,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.4904298782348633,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,row_search_window_6,-use_diamond_legalizer -row_search_window 6,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.4700071811676025,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,row_search_window_20,-use_diamond_legalizer -row_search_window 20,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.4609756469726562,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,disallow_one_site_gaps,-use_diamond_legalizer -disallow_one_site_gaps,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.535494327545166,0,True,True,LEGAL_UNCHANGED
+zero-riscy-b-1-c2,disable_window_extension,-use_diamond_legalizer -disable_window_extension,PASS,2380997.3,2386646.3,2386646.3,0.0,0.0,2.498636245727539,0,True,True,LEGAL_UNCHANGED

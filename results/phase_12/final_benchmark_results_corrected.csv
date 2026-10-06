@@ -1,0 +1,21 @@
+seed,benchmark_id,design,baseline_hpwl,rl_hpwl,absolute_improvement,improvement_percent,rl_action,rl_flags,baseline_status,rl_status
+42,BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,731102.3,731102.3,0.0,0.0,DOWN_DETAILED,-use_diamond_legalizer,PASS,PASS
+42,BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,644211.4,644211.4,0.0,0.0,DOWN_DETAILED,-use_diamond_legalizer,PASS,PASS
+42,BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,701189.8,701189.8,0.0,0.0,DOWN_INTEGERS,-use_diamond_legalizer,PASS,PASS
+42,BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,700344.0,700344.0,0.0,0.0,DOWN_INTEGERS,-use_diamond_legalizer,PASS,PASS
+43,BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,731102.3,731102.3,0.0,0.0,DO_NOTHING,-use_diamond_legalizer,PASS,PASS
+43,BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,644211.4,644211.4,0.0,0.0,UP_EFFORTS,-max_displacement 10 -site_search_window 10 -use_diamond_legalizer,PASS,FAIL
+43,BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,701189.8,701189.8,0.0,0.0,DOWN_INTEGERS,-use_diamond_legalizer,PASS,PASS
+43,BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,700344.0,700344.0,0.0,0.0,DOWN_INTEGERS,-use_diamond_legalizer,PASS,PASS
+44,BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,731102.3,731102.3,0.0,0.0,DOWN_EFFORTS,-use_diamond_legalizer,PASS,PASS
+44,BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,644211.4,644211.4,0.0,0.0,UP_EFFORTS,-max_displacement 10 -site_search_window 10 -use_diamond_legalizer,PASS,FAIL
+44,BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,701189.8,701189.8,0.0,0.0,DOWN_INTEGERS,-use_diamond_legalizer,PASS,PASS
+44,BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,700344.0,700344.0,0.0,0.0,UP_EFFORTS,-max_displacement 10 -site_search_window 10 -use_diamond_legalizer,PASS,PASS
+45,BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,731102.3,731102.3,0.0,0.0,DOWN_EFFORTS,-use_diamond_legalizer,PASS,PASS
+45,BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,644211.4,644211.4,0.0,0.0,DO_NOTHING,-use_diamond_legalizer,PASS,PASS
+45,BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,701189.8,701189.8,0.0,0.0,DOWN_DETAILED,-use_diamond_legalizer,PASS,PASS
+45,BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,700344.0,700344.0,0.0,0.0,DO_NOTHING,-use_diamond_legalizer,PASS,PASS
+46,BENCH_01_RISCY_C2_U70,RISCY-a-1-c2,731102.3,731102.3,0.0,0.0,FLIP_BOOLEANS,-disallow_one_site_gaps -use_diamond_legalizer -disable_window_extension,PASS,PASS
+46,BENCH_02_RISCY_C2_U90,RISCY-a-1-c2,644211.4,644211.4,0.0,0.0,UP_EFFORTS,-max_displacement 10 -site_search_window 10 -use_diamond_legalizer,PASS,FAIL
+46,BENCH_03_RISCY_C5_U70,RISCY-a-1-c5,701189.8,701189.8,0.0,0.0,FLIP_BOOLEANS,-disallow_one_site_gaps -use_diamond_legalizer -disable_window_extension,PASS,PASS
+46,BENCH_04_RISCY_C20_U70,RISCY-a-1-c20,700344.0,700344.0,0.0,0.0,DOWN_DETAILED,-use_diamond_legalizer,PASS,PASS

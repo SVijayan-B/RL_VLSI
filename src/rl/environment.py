@@ -95,7 +95,12 @@ class VLSIPlacementEnv:
 
         # Reset parameters to baseline defaults
         self.current_params = {p["name"]: p["default"] for p in self.state_space.params}
-        self.baseline_hpwl = float(self.current_benchmark["baseline_HPWL"])
+        self.baseline_hpwl = float(
+            self.current_benchmark.get("default_dpl_baseline_HPWL_um") or
+            self.current_benchmark.get("rl_start_HPWL_um") or
+            self.current_benchmark.get("baseline_HPWL") or
+            self.current_benchmark.get("initial_HPWL_um")
+        )
         self.current_hpwl = self.baseline_hpwl
         self.previous_hpwl = self.baseline_hpwl
         self.current_def_path = self.current_benchmark["source_DEF"]
@@ -174,9 +179,8 @@ class VLSIPlacementEnv:
         t0 = time.time()
 
         # Execute placement evaluation
-        # Analytical HPWL calculation on baseline with parameter response model
-        base_res = compute_canonical_hpwl(self.current_def_path)
-        base_calc_hpwl = base_res["total_hpwl_um"]
+        # Fast parameter response model anchored on baseline_hpwl established at episode reset
+        base_calc_hpwl = self.baseline_hpwl
 
         # Real parameter influence modeled from Phase 7 parameter sweep response:
         # Larger max_displacement & site_search_window allow tighter wirelength optimization

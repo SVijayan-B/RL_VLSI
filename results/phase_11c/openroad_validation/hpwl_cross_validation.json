@@ -1,0 +1,16 @@
+{
+  "design": "RISCY-a-2-c2",
+  "openroad_initial_hpwl_um": 6574215.9,
+  "openroad_legalized_hpwl_um": 6575752.1,
+  "python_initial_hpwl_um": 6603109.17,
+  "python_legalized_hpwl_um": 6604705.8,
+  "initial_relative_diff_pct": 0.4395,
+  "legalized_relative_diff_pct": 0.4403,
+  "num_cells": 53589,
+  "num_nets": 54185,
+  "core_width_um": 583.8,
+  "core_height_um": 582.9,
+  "die_area_um2": 340297.02,
+  "total_cell_area_um2": 225987.74,
+  "measured_utilization": 0.6641
+}

@@ -1,0 +1,101 @@
+{
+  "num_designs_tested": 10,
+  "total_configurations_tested": 10,
+  "total_evaluations": 100,
+  "best_observed_improvement_pct": 0.0,
+  "worst_observed_degradation_pct": -0.0002,
+  "median_improvement_pct": 0.0,
+  "headroom_classification": "LOW",
+  "parameter_statistics": {
+    "CFG_0_BASELINE": {
+      "description": "baseline",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    },
+    "CFG_1_MAX_DISP_10": {
+      "description": "max_disp=10",
+      "mean_change_pct": -0.0001,
+      "median_change_pct": -0.0001,
+      "min_change_pct": -0.0002,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.5,
+      "fraction_unchanged": 0.5
+    },
+    "CFG_2_MAX_DISP_50": {
+      "description": "max_disp=50",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    },
+    "CFG_3_SITE_SEARCH_10": {
+      "description": "site_search=10",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    },
+    "CFG_4_SITE_SEARCH_50": {
+      "description": "site_search=50",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    },
+    "CFG_5_ROW_SEARCH_2": {
+      "description": "row_search=2",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    },
+    "CFG_6_ROW_SEARCH_6": {
+      "description": "row_search=6",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    },
+    "CFG_7_DISALLOW_GAPS": {
+      "description": "disallow_gaps=true",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    },
+    "CFG_8_DISABLE_EXT": {
+      "description": "disable_ext=true",
+      "mean_change_pct": 0.0,
+      "median_change_pct": 0.0,
+      "min_change_pct": 0.0,
+      "max_change_pct": 0.0,
+      "fraction_improved": 0.0,
+      "fraction_degraded": 0.0,
+      "fraction_unchanged": 1.0
+    }
+  }
+}

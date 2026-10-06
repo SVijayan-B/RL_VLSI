@@ -1,0 +1,16 @@
+design_key,graph_path,embedding_source,embedding_shape,embedding_checksum,status
+RISCY-FPU-a-1-c2,dataset/graphs/RISCY-FPU-a-1-c2_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.348789_0.0016,PASS
+RISCY-FPU-a-1-c20,dataset/graphs/RISCY-FPU-a-1-c20_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.328252_0.0014,PASS
+RISCY-FPU-a-1-c5,dataset/graphs/RISCY-FPU-a-1-c5_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.320438_0.0010,PASS
+RISCY-FPU-a-2-c2,dataset/graphs/RISCY-FPU-a-2-c2_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.364367_0.0016,PASS
+RISCY-FPU-a-2-c20,dataset/graphs/RISCY-FPU-a-2-c20_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.342967_0.0014,PASS
+RISCY-FPU-a-2-c5,dataset/graphs/RISCY-FPU-a-2-c5_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.334712_0.0010,PASS
+RISCY-FPU-a-3-c2,dataset/graphs/RISCY-FPU-a-3-c2_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.377405_0.0016,PASS
+RISCY-FPU-a-3-c20,dataset/graphs/RISCY-FPU-a-3-c20_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.354951_0.0014,PASS
+RISCY-FPU-a-3-c5,dataset/graphs/RISCY-FPU-a-3-c5_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.346275_0.0010,PASS
+RISCY-FPU-b-1-c2,dataset/graphs/RISCY-FPU-b-1-c2_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.537483_0.0000,PASS
+RISCY-FPU-b-1-c20,dataset/graphs/RISCY-FPU-b-1-c20_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.506977_0.0001,PASS
+RISCY-FPU-b-1-c5,dataset/graphs/RISCY-FPU-b-1-c5_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.532989_0.0001,PASS
+RISCY-FPU-b-2-c2,dataset/graphs/RISCY-FPU-b-2-c2_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.537483_0.0000,PASS
+RISCY-FPU-b-2-c20,dataset/graphs/RISCY-FPU-b-2-c20_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.528309_0.0001,PASS
+RISCY-FPU-b-2-c5,dataset/graphs/RISCY-FPU-b-2-c5_graph.npz,results/phase_09/graph_embeddings.csv,"(32,)",0.554099_0.0001,PASS

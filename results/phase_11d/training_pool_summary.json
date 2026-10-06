@@ -1,0 +1,11 @@
+{
+  "total_training_designs": 49,
+  "baseline_successful": 42,
+  "baseline_failed": 7,
+  "mean_baseline_hpwl_um": 4530435.44,
+  "median_baseline_hpwl_um": 4318513.45,
+  "std_baseline_hpwl_um": 1805629.73,
+  "mean_runtime_sec": 2.59,
+  "total_movable_cells": 2174230,
+  "mean_movable_cells": 44372.0
+}

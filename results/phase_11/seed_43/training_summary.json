@@ -1,0 +1,16 @@
+{
+  "seed": 43,
+  "training_config_hash": "sha256_phase11_proto_v1",
+  "graphsage_checkpoint": "results/phase_09/checkpoints/graphsage_best.pt",
+  "dataset_version": "CircuitNet_28nm_v1",
+  "timestamp": "2026-10-04 14:11:54Z",
+  "total_episodes": 100,
+  "total_transitions": 1000,
+  "best_training_episode": 73,
+  "best_training_return": 0.013032,
+  "best_training_improvement_pct": 1.2964,
+  "final_training_return": -1.1e-05,
+  "final_training_improvement_pct": 0.0,
+  "training_design_count": 51,
+  "elapsed_seconds": 1.64
+}

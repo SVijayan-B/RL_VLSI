@@ -1,0 +1,131 @@
+{
+  "phase": "Phase 11 \u2014 A2C Placement Optimization Training",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "reference": "Agnesina et al., IEEE TCAD 2023",
+  "algorithm": "Advantage Actor-Critic (A2C)",
+  "random_seed_policy": {
+    "minimum_seed_set": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "description": "Multi-seed isolated training runs. No single-seed claims.",
+    "seed_directory_template": "results/phase_11/seed_{seed}/"
+  },
+  "data_partition_isolation": {
+    "training_designs_count": 51,
+    "quarantined_test_benchmarks": [
+      "BENCH_01_RISCY_C2_U70",
+      "BENCH_02_RISCY_C2_U90",
+      "BENCH_03_RISCY_C5_U70",
+      "BENCH_04_RISCY_C20_U70"
+    ],
+    "test_design_keys": [
+      "RISCY-a-1-c2",
+      "RISCY-a-1-c5",
+      "RISCY-a-1-c20"
+    ],
+    "policy": "Strict isolation. Zero gradient updates, zero reward tuning, and zero checkpoint selection using held-out test benchmarks."
+  },
+  "representation_freeze": {
+    "graphsage_checkpoint": "results/phase_09/checkpoints/graphsage_best.pt",
+    "feature_dim": 7,
+    "embedding_dim": 32,
+    "status": "FROZEN",
+    "note": "GraphSAGE weights are strictly frozen. No gradient modifies GraphSAGE."
+  },
+  "state_space": {
+    "dimension": 41,
+    "components": {
+      "graph_embedding": 32,
+      "normalized_parameters": 6,
+      "placement_metrics": 2,
+      "episode_progress": 1
+    }
+  },
+  "action_space": {
+    "dimension": 8,
+    "mapping": [
+      {
+        "id": 0,
+        "name": "FLIP_BOOLEANS",
+        "paper_action": "FLIP Booleans",
+        "status": "VERIFIED"
+      },
+      {
+        "id": 1,
+        "name": "UP_INTEGERS",
+        "paper_action": "UP Integers",
+        "status": "VERIFIED"
+      },
+      {
+        "id": 2,
+        "name": "DOWN_INTEGERS",
+        "paper_action": "DOWN Integers",
+        "status": "VERIFIED"
+      },
+      {
+        "id": 3,
+        "name": "UP_EFFORTS",
+        "paper_action": "UP Efforts",
+        "status": "PARTIALLY_VERIFIED"
+      },
+      {
+        "id": 4,
+        "name": "DOWN_EFFORTS",
+        "paper_action": "DOWN Efforts",
+        "status": "PARTIALLY_VERIFIED"
+      },
+      {
+        "id": 5,
+        "name": "UP_DETAILED",
+        "paper_action": "UP Detailed",
+        "status": "VERIFIED"
+      },
+      {
+        "id": 6,
+        "name": "DOWN_DETAILED",
+        "paper_action": "DOWN Detailed",
+        "status": "VERIFIED"
+      },
+      {
+        "id": 7,
+        "name": "DO_NOTHING",
+        "paper_action": "DO NOTHING",
+        "status": "VERIFIED"
+      }
+    ],
+    "unavailable_paper_actions_rejected": [
+      "UP Global",
+      "DOWN Global",
+      "INVERT-MIX"
+    ]
+  },
+  "reward_function": {
+    "formula": "r = (HPWL_prev - HPWL_curr) / max(abs(HPWL_prev), epsilon)",
+    "epsilon": 1e-06,
+    "provenance": "RELATIVE_HPWL_IMPROVEMENT",
+    "failure_penalty": -1.0
+  },
+  "hyperparameters": {
+    "num_episodes": 100,
+    "max_steps_per_episode": 10,
+    "learning_rate": 0.0007,
+    "gamma": 0.99,
+    "entropy_coef": 0.01,
+    "value_loss_coef": 0.5,
+    "max_grad_norm": 0.5,
+    "hidden_dim": 128,
+    "optimizer": "Adam",
+    "checkpoint_frequency_episodes": 10,
+    "evaluation_frequency_episodes": 20
+  },
+  "logging_schema": {
+    "transitions_csv": "results/phase_11/seed_{seed}/transitions.csv",
+    "episode_metrics_csv": "results/phase_11/seed_{seed}/episode_metrics.csv",
+    "checkpoint_metadata_json": "results/phase_11/seed_{seed}/checkpoint_metadata.json"
+  }
+}

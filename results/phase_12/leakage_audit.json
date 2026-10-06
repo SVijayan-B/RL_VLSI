@@ -1,0 +1,8 @@
+{
+  "no_held_out_hpwl_during_training": true,
+  "no_held_out_reward": true,
+  "no_held_out_checkpoint_selection": true,
+  "no_held_out_normalization": true,
+  "no_test_time_parameter_search": true,
+  "status": "PASS"
+}

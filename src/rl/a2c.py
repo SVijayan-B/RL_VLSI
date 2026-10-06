@@ -1,9 +1,8 @@
 """
-Phase 10: Advantage Actor-Critic (A2C) Network Architecture.
+Phase 11: Advantage Actor-Critic (A2C) Network Architecture.
 Implements:
-- Shared or separate MLP state representation
-- Actor Head: state (41) -> hidden (64) -> action distribution (8)
-- Critic Head: state (41) -> hidden (64) -> state value V(s) (1)
+- Actor Network: 41 -> 128 -> 128 -> 8 (Categorical Action Distribution)
+- Critic Network: 41 -> 128 -> 128 -> 1 (State Value V(s))
 - Loss: L = L_policy + 0.5 * L_value - 0.01 * Entropy
 """
 
@@ -15,26 +14,31 @@ from torch.distributions import Categorical
 class ActorCritic(nn.Module):
     """
     Standard A2C Policy and Value Network.
+    Follows recommended 41 -> 128 -> 128 -> 8 (Actor) and 41 -> 128 -> 128 -> 1 (Critic).
     """
-    def __init__(self, state_dim: int = 41, action_dim: int = 8, hidden_dim: int = 64):
+    def __init__(self, state_dim: int = 41, action_dim: int = 8, hidden_dim: int = 128):
         super(ActorCritic, self).__init__()
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.hidden_dim = hidden_dim
 
-        # Feature extractor
-        self.fc_shared = nn.Sequential(
+        # Separate actor network (41 -> 128 -> 128 -> 8)
+        self.actor_net = nn.Sequential(
             nn.Linear(state_dim, hidden_dim),
             nn.ReLU(),
             nn.Linear(hidden_dim, hidden_dim),
-            nn.ReLU()
+            nn.ReLU(),
+            nn.Linear(hidden_dim, action_dim)
         )
 
-        # Actor head (action logits)
-        self.actor_head = nn.Linear(hidden_dim, action_dim)
-
-        # Critic head (state value)
-        self.critic_head = nn.Linear(hidden_dim, 1)
+        # Separate critic network (41 -> 128 -> 128 -> 1)
+        self.critic_net = nn.Sequential(
+            nn.Linear(state_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, 1)
+        )
 
     def forward(self, state: torch.Tensor):
         """
@@ -42,9 +46,8 @@ class ActorCritic(nn.Module):
             action_logits: [batch, action_dim]
             state_value: [batch, 1]
         """
-        feat = self.fc_shared(state)
-        logits = self.actor_head(feat)
-        value = self.critic_head(feat)
+        logits = self.actor_net(state)
+        value = self.critic_net(state)
         return logits, value
 
     def get_action_and_value(self, state: torch.Tensor, action: torch.Tensor = None):

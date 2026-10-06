@@ -172,12 +172,24 @@
 
 ## NEXT PHASE
 
-### PHASE 9 — GRAPHSAGE ARCHITECTURE & NODE EMBEDDINGS
-**Status: READY TO COMMENCE (DO NOT START YET)**
-- Implement GraphSAGE model architecture taking 7-dimensional cell features.
-- Define 2-hop neighborhood sampling and mean aggregation on projected cell graphs.
-- Formulate unsupervised InfoNCE contrastive learning or link prediction.
-- Generate 32-dimensional node embeddings and permutation-invariant mean-aggregated graph embeddings.
+### PHASE 11A — TRAINING ENVIRONMENT / DATA INTEGRITY REPAIR
+**Status: COMPLETE (AUDIT COMPLETED — VERDICT: FAIL)**
+- Audited training design sampling and HPWL baseline provenance.
+- Proved 2-design sampling limitation and benchmark baseline coupling.
+
+### PHASE 11B — CIRCUITNET PLACEMENT COVERAGE & PHYSICAL ENVIRONMENT AUDIT
+**Status: COMPLETE (AUDIT COMPLETED — CLASSIFICATION: CLASS B)**
+- Enumerated all 10,242 placement samples across 52/54 designs.
+- Determined coordinate unit system: GCELL_GRID_256x256.
+- Established 97.85% instance overlap across covered training designs.
+- Evaluated placement-derived HPWL proxy and OpenROAD physical smoke test.
+- Zero held-out physical leakage verified.
+
+### PHASE 12 — EXPERIMENTAL VALIDATION & HELD-OUT BENCHMARK COMPARISONS
+**Status: PENDING (BLOCKED ON TRAINING ENVIRONMENT REPAIR)**
+- Execute evaluation on the 4 quarantined held-out benchmarks: BENCH_01_RISCY_C2_U70, BENCH_02_RISCY_C2_U90, BENCH_03_RISCY_C5_U70, BENCH_04_RISCY_C20_U70.
+- Compare trained A2C actor-critic policy against default OpenROAD DPL baselines.
+- Evaluate multi-seed generalization and runtime trade-offs.
 
 ---
 ## ROADMAP OF SUBSEQUENT PHASES
@@ -195,7 +207,10 @@
 | **Phase 8** | **Graph Feature Extraction (Heterogeneous Netlist Graph)** | **COMPLETE** |
 | Phase 9 | GraphSAGE Architecture & Node Embeddings | **COMPLETE** |
 | Phase 10 | RL Environment (Placement State, Action Space, Rewards) | **COMPLETE** |
-| Phase 11 | A2C Policy/Value Network Training | **READY TO COMMENCE** |
+| **Phase 10A** | **Final Integrity Cleanup & A2C Training Protocol Lock** | **COMPLETE** |
+| **Phase 11** | **A2C Policy/Value Network Training** | **INITIAL COMPLETE (AUDITED)** |
+| **Phase 11A** | **Training Environment / Data Integrity Repair** | **COMPLETE (FAILED)** |
+| **Phase 11B** | **Placement Coverage & Physical Environment Audit** | **COMPLETE (CLASS B)** |
 | Phase 12 | Experimental Validation & Benchmark Comparisons | PENDING |
 | Phase 13 | Paper-Style Plots, Tables & Statistical Analysis | PENDING |
 | Phase 14 | Final Reproducibility Report & Documentation | PENDING |

@@ -1,0 +1,6 @@
+seed,episodes,mean_episode_return,best_episode_return,final_episode_return,mean_training_improvement_pct,best_training_improvement_pct,final_training_improvement_pct,mean_failed_steps,total_steps,best_checkpoint,status
+42,100,0.009207,0.009207,-1e-06,0.0,0.9181,0.0,0,1000,results/phase_11/seed_42/checkpoint_best.pt,COMPLETED
+43,100,0.013032,0.013032,-1.1e-05,0.0,1.2964,0.0,0,1000,results/phase_11/seed_43/checkpoint_best.pt,COMPLETED
+44,100,0.01232,0.01232,-6e-06,0.0,1.2264,0.0,0,1000,results/phase_11/seed_44/checkpoint_best.pt,COMPLETED
+45,100,0.01464,0.01464,-7e-06,0.0,1.455,0.0,0,1000,results/phase_11/seed_45/checkpoint_best.pt,COMPLETED
+46,100,0.015445,0.015445,-1.7e-05,0.0,1.5342,0.0,0,1000,results/phase_11/seed_46/checkpoint_best.pt,COMPLETED
